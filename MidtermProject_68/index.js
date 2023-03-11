@@ -125,8 +125,10 @@ if(carouselTempEl != null){
 	carouselTemp = new bootstrap.Carousel(carouselTempEl, {interval: false})
 }
 
-if (carouselHum && carouselTemp || window.location.pathname === '/index.html')
+
+if (carouselHum && carouselTemp || window.location.pathname === "/MidtermProject_68/index.html")
 {
+	
 	setInterval(fetchLatestData, 5000);
 	
 }
