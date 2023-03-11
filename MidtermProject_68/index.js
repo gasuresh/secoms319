@@ -1,8 +1,6 @@
 
 function fetchLatestData() {
-	
-	
-	
+
 	fetch("./data.json", {cache: "no-store"})
 		.then(function (response) {
 			return response.json();
@@ -125,7 +123,6 @@ if(carouselTempEl != null){
 	carouselTemp = new bootstrap.Carousel(carouselTempEl, {interval: false})
 }
 
-console.log(window.location.href.endsWith("/index.html"))
 
 if (carouselHum && carouselTemp || window.location.href.endsWith("/index.html"))
 {
