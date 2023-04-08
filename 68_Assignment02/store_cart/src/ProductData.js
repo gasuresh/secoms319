@@ -1,4 +1,4 @@
-[
+const ProductData = [
   {
     "id": 1,
     "title": "Bowling Pin Hat",
@@ -108,3 +108,5 @@
     "rating": { "rate": 4.8, "count": 400 }
   }
 ]
+
+export default ProductData

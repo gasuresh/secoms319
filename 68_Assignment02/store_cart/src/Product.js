@@ -14,6 +14,8 @@ const Product = ({ name, image, price, description }) => {
     }
   };
 
+  console.log("Hello");
+
   return (
     <Card style={{ width: '18rem' }}>
       <Card.Img variant="top" src={image} />
