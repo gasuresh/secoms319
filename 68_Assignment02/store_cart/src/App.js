@@ -272,7 +272,6 @@ function App() {
     );
   }
 
-
   return (
     <>
       {!checkoutPressed && !backButtonClick && (
