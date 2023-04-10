@@ -14,7 +14,7 @@ const Product = ({ product, onQuantityChange }) => {
   };
 
   const handleRemove = () => {
-    if (quantity > 1) {
+    if (quantity > 0) {
       onQuantityChange({ ...product, quantity: quantity - 1 });
     }
   };
@@ -45,23 +45,17 @@ const Product = ({ product, onQuantityChange }) => {
 function App() {
   const [products, setProducts] = useState(ProductData);
   const [cart, setCart] = useState([]);
+  
+  useEffect(() => {
+    setCart(products.filter((product) => product.quantity > 0));
+  }, [products]);
+
   const handleQuantityChange = (updatedProduct) => {
     const updatedProducts = products.map((product) => (product.id === updatedProduct.id ? updatedProduct : product));
     setProducts(updatedProducts);
   };
 
 
-
-  /*
-  return (
-    <div>
-      {products.map((product) => (
-        <Product key={product.id} product={product} onQuantityChange={handleQuantityChange} />
-      ))}
-    </div>
-  );*/
-
-  
   
   const ProductsList = () => {
     return (
@@ -104,7 +98,7 @@ function App() {
     const total = () => {
         let totalVal = 0;
         for (let i = 0; i < cart.length; i++) {
-            totalVal += cart[i].price;
+            totalVal += (cart[i].price * cart[i].quantity);
         }
         setCartTotal(totalVal);
     };
@@ -149,7 +143,7 @@ function App() {
         </div>
     ));
   
-    const listItems = ProductData.map((el) => (
+    const listItems = cart.map((el) => (
         <div class="row border-top border-bottom" key={el.id}>
             <div class="row main align-items-center">
                 <div class="col-2">
@@ -164,7 +158,7 @@ function App() {
                     <button type="button" variant="light" onClick={() => addToCart(el)}> + </button>
                 </div> */}
                 <div class="col">
-                    ${el.price} <span class="close">&#10005;</span>{howManyofThis(el.id)}
+                    ${el.price} <span class="close">&#10005;</span>{el.quantity}
                 </div>
             </div>
         </div>
