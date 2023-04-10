@@ -6,57 +6,70 @@ import {Card, Navbar, Form, FormControl, Button, Container} from 'react-bootstra
 
 
 
-function App() {
-  
+const Product = ({ product, onQuantityChange }) => {
+  const { title, image, price, description, quantity } = product;
 
-
-  const Product = ({ title, image, price, description }) => {
-    const [quantity, setQuantity] = useState(0);
-  
-    const handleAdd = () => {
-      setQuantity(prevQuantity => prevQuantity + 1);
-    };
-  
-    const handleRemove = () => {
-      if (quantity > 0) {
-        setQuantity(prevQuantity => prevQuantity - 1);
-      }
-    };
-  
-  
-    return (
-      <Card style={{ width: '15rem', margin:".5rem"}}>
-        <Card.Img variant="top" src={image} />
-        <Card.Body>
-          <Card.Title>{title}</Card.Title>
-          <Card.Text>{description}</Card.Text>
-          <div>
-            <div style={{ display: 'inline-block', marginRight: '1rem' }}>{`Quantity: ${quantity}`}</div>
-            <div style={{ display: 'inline-block' }}>{`Price: $${parseInt(price)}`}</div>
-            <div>
-              <Button variant="primary" onClick={handleAdd} style={{ marginRight: '0.5rem' }}>
-                Add
-              </Button>
-              <Button variant="danger" onClick={handleRemove} style={{ marginLeft: '0.5rem' }}>
-                Remove
-              </Button>
-            </div>
-          </div>
-        </Card.Body>
-      </Card>
-  
-     
-    );
+  const handleAdd = () => {
+    onQuantityChange({ ...product, quantity: quantity + 1 });
   };
+
+  const handleRemove = () => {
+    if (quantity > 1) {
+      onQuantityChange({ ...product, quantity: quantity - 1 });
+    }
+  };
+
+  return (
+    <Card style={{ width: '15rem', margin: '.5rem' }}>
+      <Card.Img variant="top" src={image} />
+      <Card.Body>
+        <Card.Title>{title}</Card.Title>
+        <Card.Text>{description}</Card.Text>
+        <div>
+          <div style={{ display: 'inline-block', marginRight: '1rem' }}>{`Quantity: ${quantity}`}</div>
+          <div style={{ display: 'inline-block' }}>{`Price: $${parseInt(price)}`}</div>
+          <div>
+            <Button variant="primary" onClick={handleAdd} style={{ marginRight: '0.5rem' }}>
+              Add
+            </Button>
+            <Button variant="danger" onClick={handleRemove} style={{ marginLeft: '0.5rem' }}>
+              Remove
+            </Button>
+          </div>
+        </div>
+      </Card.Body>
+    </Card>
+  );
+};
+
+function App() {
+  const [products, setProducts] = useState(ProductData);
+  const [cart, setCart] = useState([]);
+  const handleQuantityChange = (updatedProduct) => {
+    const updatedProducts = products.map((product) => (product.id === updatedProduct.id ? updatedProduct : product));
+    setProducts(updatedProducts);
+  };
+
+
+
+  /*
+  return (
+    <div>
+      {products.map((product) => (
+        <Product key={product.id} product={product} onQuantityChange={handleQuantityChange} />
+      ))}
+    </div>
+  );*/
+
+  
   
   const ProductsList = () => {
-    const [products, setProducts] = useState(ProductData);
     return (
       <Container>
         <div className="row">
           {products.map(product => (
-            <div className="col" key={product.id}>
-              <Product {...product} />
+            <div className="col">
+              <Product key={product.id} product={product} onQuantityChange={handleQuantityChange} />
             </div>
           ))}
         </div>
@@ -80,8 +93,8 @@ function App() {
   }
   
   const Cart = () => {
-    const [cart, setCart] = useState([]);
-    const [quantity, setQuantity] = useState(0);
+    
+    //const [quantity, setQuantity] = useState(0);
     const [cartTotal, setCartTotal] = useState(0);
   
     useEffect(() => {
@@ -96,32 +109,32 @@ function App() {
         setCartTotal(totalVal);
     };
   
-    const addToCart = (el) => {
-      if (!(el.id in cart))
-      {
-        setCart([...cart, el]);
-      }
+    // const addToCart = (el) => {
+    //   if (!(el.id in cart))
+    //   {
+    //     setCart([...cart, el]);
+    //   }
   
-      else
-      {
-        setQuantity(prevQuantity => prevQuantity + 1);
-      }
+    //   else
+    //   {
+    //     setQuantity(prevQuantity => prevQuantity + 1);
+    //   }
         
-    };
+    // };
   
-    const removeFromCart = (el) => {
-      if (quantity > 0) {
-        setQuantity(prevQuantity => prevQuantity - 1);
-      }
+    // const removeFromCart = (el) => {
+    //   if (quantity > 0) {
+    //     setQuantity(prevQuantity => prevQuantity - 1);
+    //   }
       
-      else
-      {
-        let hardCopy = [...cart];
-        hardCopy = hardCopy.filter((cartItem) => cartItem.id !== el.id);
-        setCart(hardCopy);
-      }
+    //   else
+    //   {
+    //     let hardCopy = [...cart];
+    //     hardCopy = hardCopy.filter((cartItem) => cartItem.id !== el.id);
+    //     setCart(hardCopy);
+    //   }
         
-    };
+    // };
   
     function howManyofThis(id) {
         let hmot = cart.filter((cartItem) => cartItem.id === id);
@@ -146,10 +159,10 @@ function App() {
                     <div class="row text-muted">{el.title}</div>
                     <div class="row">{el.category}</div>
                 </div>
-                <div class="col">
+                {/* <div class="col">
                     <button type="button" variant="light" onClick={() => removeFromCart(el)} > - </button>{" "}
                     <button type="button" variant="light" onClick={() => addToCart(el)}> + </button>
-                </div>
+                </div> */}
                 <div class="col">
                     ${el.price} <span class="close">&#10005;</span>{howManyofThis(el.id)}
                 </div>
