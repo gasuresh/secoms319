@@ -5,7 +5,6 @@ import {Card, Navbar, Form, FormControl, Button, Container} from 'react-bootstra
 
 
 
-
 const Product = ({ product, onQuantityChange }) => {
   const { title, image, price, description, quantity } = product;
 
@@ -14,7 +13,7 @@ const Product = ({ product, onQuantityChange }) => {
   };
 
   const handleRemove = () => {
-    if (quantity > 1) {
+    if (quantity > 0) {
       onQuantityChange({ ...product, quantity: quantity - 1 });
     }
   };
@@ -42,12 +41,65 @@ const Product = ({ product, onQuantityChange }) => {
   );
 };
 
+
+const SearchAndCheckout = ({ searchTerm, handleSearch }) => {
+  return (
+    <Navbar bg="light" expand="lg">
+      <div className="d-flex w-100 align-items-center justify-content-between">
+        <div className="d-flex">
+          <FormControl
+            type="text"
+            placeholder="Search"
+            className="mr-sm-2"
+            value={searchTerm}
+            onChange={handleSearch}
+          />
+        </div>
+        <div>
+          <Button variant="primary" className="ml-auto">
+            Checkout
+          </Button>
+        </div>
+      </div>
+    </Navbar>
+  );
+};
+
+const ProductsList = ({ searchTerm, products, handleQuantityChange }) => {
+  // Filter products based on search term
+  const filteredProducts = searchTerm
+    ? products.filter((product) =>
+        product.title.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : products;
+
+  return (
+    <Container>
+      <div className="row">
+        {filteredProducts.map((product) => (
+          <div className="col" key={product.id}>
+            <Product product={product} onQuantityChange={handleQuantityChange} />
+          </div>
+        ))}
+      </div>
+    </Container>
+  );
+};
+
+
+
 function App() {
   const [products, setProducts] = useState(ProductData);
   const [cart, setCart] = useState([]);
   const handleQuantityChange = (updatedProduct) => {
     const updatedProducts = products.map((product) => (product.id === updatedProduct.id ? updatedProduct : product));
     setProducts(updatedProducts);
+  };
+
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
   };
 
 
@@ -62,35 +114,7 @@ function App() {
   );*/
 
   
-  
-  const ProductsList = () => {
-    return (
-      <Container>
-        <div className="row">
-          {products.map(product => (
-            <div className="col">
-              <Product key={product.id} product={product} onQuantityChange={handleQuantityChange} />
-            </div>
-          ))}
-        </div>
-  
-      </Container>
-      
-    );
-  };
-  
-  
-  function SearchAndCheckout() {
-    return (
-      <Navbar bg="light" expand="lg">
-          <Form inline>
-            <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-            <Button variant="outline-success">Search</Button>
-          </Form>
-          <Button variant="primary">Checkout</Button>
-      </Navbar>
-    );
-  }
+
   
   const Cart = () => {
     
@@ -207,11 +231,11 @@ function App() {
 
   return (
     <>
-      <SearchAndCheckout/>
-      <ProductsList/>
-      <Cart/>
+      <SearchAndCheckout searchTerm={searchTerm} handleSearch={handleSearch} />
+      <ProductsList searchTerm={searchTerm} products = {products} handleQuantityChange = {handleQuantityChange} />
+      <Cart />
     </>
-  )
+  );
   
 }
 
