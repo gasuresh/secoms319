@@ -1,7 +1,7 @@
 import './App.css';
 //import ProductsList from './ProductsList'
-import Cart from "./Checkout"
-import {ProductsList, SearchAndCheckout} from './ProductsList';
+
+import {ProductsList, SearchAndCheckout, Cart} from './ProductsList';
 
 
 function App() {
