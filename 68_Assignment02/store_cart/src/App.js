@@ -1,17 +1,22 @@
 import './App.css';
 //import ProductsList from './ProductsList'
 import Cart from "./Checkout"
-import ProductsList from './ProductsList';
+import {ProductsList, SearchAndCheckout} from './ProductsList';
 
 
 function App() {
 
   return (
-
-  <ProductsList/>
+    <>
+      <SearchAndCheckout/>
+      <ProductsList/>
+      <Cart/>
+    </>
+  
   
   )
   
 }
+
 
 export default App;
