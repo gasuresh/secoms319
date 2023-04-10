@@ -42,7 +42,7 @@ const Product = ({ product, onQuantityChange }) => {
 };
 
 
-const SearchAndCheckout = ({ searchTerm, handleSearch }) => {
+const SearchAndCheckout = ({ searchTerm, handleSearch, handleCheckout }) => {
   return (
     <Navbar bg="light" expand="lg">
       <div className="d-flex w-100 align-items-center justify-content-between">
@@ -56,7 +56,7 @@ const SearchAndCheckout = ({ searchTerm, handleSearch }) => {
           />
         </div>
         <div>
-          <Button variant="primary" className="ml-auto">
+          <Button variant="primary" className="ml-auto" onClick={handleCheckout}>
             Checkout
           </Button>
         </div>
@@ -86,6 +86,19 @@ const ProductsList = ({ searchTerm, products, handleQuantityChange }) => {
   );
 };
 
+const BackToProducts = ({ handleBackButtonClick }) => {
+  return (
+    <Navbar bg="light" expand="lg">
+      <div className="d-flex">
+        <Button variant="outline-secondary" onClick={handleBackButtonClick}>
+          Back to Products
+        </Button>
+      </div>
+    </Navbar>
+  );
+};
+
+
 
 
 function App() {
@@ -107,6 +120,20 @@ function App() {
     setSearchTerm(event.target.value);
   };
 
+  const [checkoutPressed, setCheckoutPressed] = useState(false);
+  const handleCheckout = () => {
+    setCheckoutPressed(true);
+    console.log("Checkout: " + checkoutPressed)
+  };
+
+  const [backButtonClick, setBackButtonClick] = useState(false)
+  const handleBackButtonClick  = () => {
+    setCheckoutPressed(false);
+    setBackButtonClick(true);
+
+  };
+
+
 
   
 
@@ -120,7 +147,6 @@ function App() {
   );*/
 
   
-
   
   const Cart = () => {
     
@@ -173,28 +199,28 @@ function App() {
   
     const cartItems = cart.map((el) => (
         <div key={el.id}>
-        <img class="img-fluid" src={el.image} alt = {el.title} width={30} />
+        <img className="img-fluid" src={el.image} alt = {el.title} width={30} />
             {el.title}
             ${el.price}
         </div>
     ));
   
     const listItems = cart.map((el) => (
-        <div class="row border-top border-bottom" key={el.id}>
-            <div class="row main align-items-center">
-                <div class="col-2">
-                    <img class="img-fluid" src={el.image} />
+        <div className="row border-top border-bottom" key={el.id}>
+            <div className="row main align-items-center">
+                <div className="col-2">
+                    <img className="img-fluid" src={el.image} />
                 </div>
-                <div class="col">
-                    <div class="row text-muted">{el.title}</div>
-                    <div class="row">{el.category}</div>
+                <div className="col">
+                    <div className="row text-muted">{el.title}</div>
+                    <div className="row">{el.category}</div>
                 </div>
                 {/* <div class="col">
                     <button type="button" variant="light" onClick={() => removeFromCart(el)} > - </button>{" "}
                     <button type="button" variant="light" onClick={() => addToCart(el)}> + </button>
                 </div> */}
-                <div class="col">
-                    ${el.price} <span class="close">&#10005;</span>{el.quantity}
+                <div className="col">
+                    ${el.price} <span className="close">&#10005;</span>{el.quantity}
                 </div>
             </div>
         </div>
@@ -202,44 +228,85 @@ function App() {
   
     return (
       <div>
-        STORE SE/ComS319
-        <div class="card">
-          <div class="row">
-            {/* HERE, IT IS THE SHOPPING CART */}
-            <div class="col-md-8 cart">
-              <div class="title">
-                <div class="row">
-                  <div class="col">
-                    <h4>
-                      <b>319 Shopping Cart</b>
-                    </h4>
+        {cart.length > 0 ? (
+          <>
+            <BackToProducts handleBackButtonClick={handleBackButtonClick}/>
+            <div className="card">
+              <div className="row">
+                {/* HERE, IT IS THE SHOPPING CART */}
+                <div className="col-md-8 cart">
+                  <div className="title">
+                    <div className="row">
+                      <div className="col">
+                        <h4>
+                          <b>319 Shopping Cart</b>
+                        </h4>
+                      </div>
+                      <div className="col align-self-center text-right text-muted">
+                        Products selected {cart.length}
+                      </div>
+                    </div>
                   </div>
-                  <div class="col align-self-center text-right text-muted">
-                    Products selected {cart.length}
-                  </div>
+                  <div>{listItems}</div>
+                </div>
+                <div className="float-end">
+                  <p className="mb-0 me-5 d-flex align-items-center">
+                    <span className="small text-muted me-2">Order total:</span>
+                    <span className="lead fw-normal">${cartTotal}</span>
+                  </p>
+                  
                 </div>
               </div>
-              <div>{listItems}</div>
             </div>
-            <div class="float-end">
-              <p class="mb-0 me-5 d-flex align-items-center">
-                <span class="small text-muted me-2">Order total:</span>
-                <span class="lead fw-normal">${cartTotal}</span>
-              </p>
-            </div>
-          </div>
-        </div>
+          </>
+        ) : (
+          <>
+            <h1 className="display-6">
+              <b>319 Shopping Cart</b>
+            </h1>
+            <h1 className="display-1">No Items in Cart</h1>
+          </>
+          
+        )}
       </div>
     );
   }
 
 
-
   return (
     <>
-      <SearchAndCheckout searchTerm={searchTerm} handleSearch={handleSearch} />
-      <ProductsList searchTerm={searchTerm} products = {products} handleQuantityChange = {handleQuantityChange} />
-      <Cart />
+      {!checkoutPressed && !backButtonClick && (
+        <>
+          <SearchAndCheckout
+            searchTerm={searchTerm}
+            handleSearch={handleSearch}
+            handleCheckout={handleCheckout}
+          />
+          <ProductsList
+            searchTerm={searchTerm}
+            products={products}
+            handleQuantityChange={handleQuantityChange}
+            handleCheckout={handleCheckout}
+          />
+        </>
+      )}
+      {checkoutPressed ? (
+        <Cart />
+      ) : (
+        <>
+          <SearchAndCheckout
+            searchTerm={searchTerm}
+            handleSearch={handleSearch}
+            handleCheckout={handleCheckout}
+          />
+          <ProductsList
+            searchTerm={searchTerm}
+            products={products}
+            handleQuantityChange={handleQuantityChange}
+            handleCheckout={handleCheckout}
+          />
+        </>
+      )}
     </>
   );
   
