@@ -17,25 +17,26 @@ const Product = ({ title, image, price, description }) => {
 
 
   return (
-    <Card style={{ width: '18rem' }}>
+    <Card style={{ width: '15rem', margin:".5rem"}}>
       <Card.Img variant="top" src={image} />
       <Card.Body>
         <Card.Title>{title}</Card.Title>
         <Card.Text>{description}</Card.Text>
         <div>
-          <div>{`Quantity: ${quantity}`}</div>
+          <div style={{ display: 'inline-block', marginRight: '1rem' }}>{`Quantity: ${quantity}`}</div>
+          <div style={{ display: 'inline-block' }}>{`Price: $${parseInt(price)}`}</div>
           <div>
-            <Button variant="primary" onClick={handleAdd}>
+            <Button variant="primary" onClick={handleAdd} style={{ marginRight: '0.5rem' }}>
               Add
             </Button>
-            <Button variant="secondary" onClick={handleRemove}>
+            <Button variant="danger" onClick={handleRemove} style={{ marginLeft: '0.5rem' }}>
               Remove
             </Button>
           </div>
         </div>
-        <div>{`Price: $${parseInt(price) * quantity}`}</div>
       </Card.Body>
-  </Card>
+    </Card>
+
 
     
    

@@ -1,4 +1,4 @@
-const ProductData = [
+[
   {
     "id": 1,
     "title": "Bowling Pin Hat",
@@ -109,4 +109,3 @@ const ProductData = [
   }
 ]
 
-export default ProductData
