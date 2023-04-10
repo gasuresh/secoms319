@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import items from "./ProductData"
 
-const Shop = () => {
+const Cart = () => {
     const [cart, setCart] = useState([]);
+    const [quantity, setQuantity] = useState(0);
     const [cartTotal, setCartTotal] = useState(0);
 
     useEffect(() => {
@@ -18,13 +19,30 @@ const Shop = () => {
     };
 
     const addToCart = (el) => {
+      if (!(el.id in cart))
+      {
         setCart([...cart, el]);
+      }
+
+      else
+      {
+        setQuantity(prevQuantity => prevQuantity + 1);
+      }
+        
     };
 
     const removeFromCart = (el) => {
+      if (quantity > 0) {
+        setQuantity(prevQuantity => prevQuantity - 1);
+      }
+      
+      else
+      {
         let hardCopy = [...cart];
         hardCopy = hardCopy.filter((cartItem) => cartItem.id !== el.id);
         setCart(hardCopy);
+      }
+        
     };
 
     function howManyofThis(id) {
@@ -66,7 +84,7 @@ const Shop = () => {
         STORE SE/ComS319
         <div class="card">
           <div class="row">
-            {/* HERE, IT IS THE SHOPING CART */}
+            {/* HERE, IT IS THE SHOPPING CART */}
             <div class="col-md-8 cart">
               <div class="title">
                 <div class="row">
@@ -94,4 +112,4 @@ const Shop = () => {
     );
 }
 
-export default Shop;
+export default Cart;

@@ -15,24 +15,28 @@ const Product = ({ title, image, price, description }) => {
     }
   };
 
-  console.log("Hello");
 
   return (
-    
     <Card style={{ width: '18rem' }}>
       <Card.Img variant="top" src={image} />
       <Card.Body>
         <Card.Title>{title}</Card.Title>
         <Card.Text>{description}</Card.Text>
-        <Button variant="primary" onClick={handleAdd}>
-          {`Add (${quantity})`}
-        </Button>
-        <Button variant="secondary" onClick={handleRemove}>
-          {`Remove (${quantity})`}
-        </Button>
+        <div>
+          <div>{`Quantity: ${quantity}`}</div>
+          <div>
+            <Button variant="primary" onClick={handleAdd}>
+              Add
+            </Button>
+            <Button variant="secondary" onClick={handleRemove}>
+              Remove
+            </Button>
+          </div>
+        </div>
         <div>{`Price: $${parseInt(price) * quantity}`}</div>
       </Card.Body>
-    </Card>
+  </Card>
+
     
    
   );

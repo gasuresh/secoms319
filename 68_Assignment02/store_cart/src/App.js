@@ -1,12 +1,16 @@
 import './App.css';
 //import ProductsList from './ProductsList'
-import Shop from "./Shop"
+import Cart from "./Checkout"
+import ProductsList from './ProductsList';
 
 
 function App() {
 
   return (
-  <Shop />)
+
+  <ProductsList/>
+  
+  )
   
 }
 

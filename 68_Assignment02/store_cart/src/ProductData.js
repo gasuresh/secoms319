@@ -10,7 +10,7 @@ const ProductData = [
   },
   {
     "id": 2,
-    "title": "Pirate Captain Har",
+    "title": "Pirate Captain Hat",
     "price": 22.3,
     "description": "Arrgh matey! If you don't buy this epic pirate hat and swab the deck I'll make you walk the plank! Arrgh!",
     "category": "hats",
