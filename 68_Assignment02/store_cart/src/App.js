@@ -1,10 +1,10 @@
 import './App.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createContext, useContext } from 'react';
 import ProductData from './product_data.json';
-import {Card, Navbar, Form, FormControl, Button, Container} from 'react-bootstrap';
+import {Card, Navbar, Form, FormControl, Button, Container, Row, Col, Table} from 'react-bootstrap';
 
 
-
+const formContext = createContext();
 
 const Product = ({ product, onQuantityChange }) => {
   const { title, image, price, description, quantity } = product;
@@ -110,6 +110,9 @@ const BackToProducts = ({ handleBackButtonClick }) => {
 };
 
 const PaymentForm = ({handleFormSubmission}) => {
+    
+  
+  const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -121,8 +124,6 @@ const PaymentForm = ({handleFormSubmission}) => {
     zip: "",
   });
 
-  const [errors, setErrors] = useState({});
-
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData((formData) => ({
@@ -130,6 +131,7 @@ const PaymentForm = ({handleFormSubmission}) => {
       [name]: value,
     }));
   };
+  
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -175,6 +177,7 @@ const PaymentForm = ({handleFormSubmission}) => {
   };
 
   return (
+    <formContext.Provider value={{ formData, setFormData }}>
     <Container className='bg-light mx-auto my-5'>
       <Form onSubmit={handleSubmit}>
       <Form.Group controlId="fullName">
@@ -289,14 +292,12 @@ const PaymentForm = ({handleFormSubmission}) => {
     </Form>
 
     </Container>
+    </formContext.Provider>
     
   );
 }
 
-const ConfirmationView = () =>
-{
-  return <h1 className="display-1">This is the Confirmation View</h1>
-}
+
 
 
 
@@ -306,6 +307,8 @@ const ConfirmationView = () =>
 function App() {
   const [products, setProducts] = useState(ProductData);
   const [cart, setCart] = useState([]);
+  //const [formData] = useContext(formContext);
+  const [formData] = useState(0);
 
   useEffect(() => {
     setCart(products.filter((product) => product.quantity > 0));
@@ -341,6 +344,24 @@ function App() {
     setIsFormSubmitted(true);
   };
 
+  const newBrowse = ({ handleConfirmButtonClick }) => {
+    return(
+      <Navbar bg="light" expand="lg">
+      <div className="d-flex">
+          <Button variant="outline-secondary" onClick={handleConfirmButtonClick}>
+            Continue Shopping
+          </Button>
+      </div>
+      </Navbar>
+    );  
+  };
+
+  const [confirmButtonClick, setConfirmButtonClick] = useState(false);
+  
+  const handleConfirmButtonClick = () => {
+    setCart([]);
+    setConfirmButtonClick(true);
+  };
   
 
   /*
@@ -360,7 +381,7 @@ function App() {
   
     useEffect(() => {
         total();
-    }, [cart]);
+    }, []);
   
     const total = () => {
         let totalVal = 0;
@@ -370,45 +391,7 @@ function App() {
         setCartTotal(totalVal);
     };
   
-    // const addToCart = (el) => {
-    //   if (!(el.id in cart))
-    //   {
-    //     setCart([...cart, el]);
-    //   }
-  
-    //   else
-    //   {
-    //     setQuantity(prevQuantity => prevQuantity + 1);
-    //   }
-        
-    // };
-  
-    // const removeFromCart = (el) => {
-    //   if (quantity > 0) {
-    //     setQuantity(prevQuantity => prevQuantity - 1);
-    //   }
-      
-    //   else
-    //   {
-    //     let hardCopy = [...cart];
-    //     hardCopy = hardCopy.filter((cartItem) => cartItem.id !== el.id);
-    //     setCart(hardCopy);
-    //   }
-        
-    // };
-  
-    function howManyofThis(id) {
-        let hmot = cart.filter((cartItem) => cartItem.id === id);
-        return hmot.length;
-    } 
-  
-    const cartItems = cart.map((el) => (
-        <div key={el.id}>
-        <img className="img-fluid" src={el.image} alt = {el.title} width={30} />
-            {el.title}
-            ${el.price}
-        </div>
-    ));
+    
   
     const listItems = cart.map((el) => (
         <div className="row border-top border-bottom" key={el.id}>
@@ -436,6 +419,7 @@ function App() {
         {cart.length > 0 ? (
           <>
             <BackToProducts handleBackButtonClick={handleBackButtonClick}/>
+            
             <div className="card">
               <div className="row">
                 {/* HERE, IT IS THE SHOPPING CART */}
@@ -457,7 +441,7 @@ function App() {
                 <div className="float-end">
                   <p className="mb-0 me-5 d-flex align-items-center">
                     <span className="small text-muted me-2">Order total:</span>
-                    <span className="lead fw-normal">${cartTotal}</span>
+                    <span className="lead fw-normal">${cartTotal.toFixed(2)}</span>
                   </p>
                   
                 </div>
@@ -468,6 +452,7 @@ function App() {
 
         ) : (
           <>
+            <BackToProducts handleBackButtonClick={handleBackButtonClick}/>
             <h1 className="display-6">
               <b>319 Shopping Cart</b>
             </h1>
@@ -476,6 +461,72 @@ function App() {
           
         )}
       </div>
+    );
+  }
+
+  
+
+  const ConfirmationView = () =>
+  {
+    
+    const totalCost = cart.reduce((total, product) => total + (product.price * product.quantity), 0);
+
+    return (
+      <>
+      <h1 className="display-1 text-center">Order Summary</h1>
+      <Container>
+      <Row>
+        <Col>
+          <h1>Price Breakdown</h1>
+          <Table>
+            <thead>
+              <tr>
+                <th></th>
+                <th>Product Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {cart.map((product) => (
+                <tr key={product.id}>
+                  <td><img className="img-fluid" src={product.image} style={{maxWidth: "200px"}} /></td>
+                  <td>{product.title}</td>
+                  <td>${product.price.toFixed(2)}</td>
+                  <td>{product.quantity}</td>
+                  <td>${(product.price * product.quantity).toFixed(2)}</td>
+                </tr>
+              ))}
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><strong>Total:</strong></td>
+                <td>${totalCost.toFixed(2)}</td>
+              </tr>
+            </tbody>
+          </Table>
+        </Col>
+      </Row>
+      </Container>
+      <Container>
+      <h2>Order Details:</h2>
+      {/* Display order details */}
+      <p>Name: {formData.fullName}</p>
+      <p>Email: {formData.email}</p>
+      <p>Credit Card: {formData.creditCard}</p>
+      <p>Address: {formData.address1}</p>
+      <p>Optional Second Line: {formData.address2}</p>
+      <p>City: {formData.city}</p>
+      <p>State: {formData.state}</p>
+      <p>Zip Code: {formData.zip}</p>
+
+      </Container>
+      <newBrowse handleConfirmButtonClick={handleConfirmButtonClick} />
+
+      </>
+
     );
   }
 
@@ -503,11 +554,19 @@ function App() {
           <PaymentForm handleFormSubmission={handleFormSubmission} />
         </>
       )}
-      {isFormSubmitted && (<ConfirmationView />)}
+      {isFormSubmitted && (
+        <>
+          <ConfirmationView handleConfirmButtonClick={handleConfirmButtonClick}/>
+        </>
+
+      )}
+
     </>
   );
   
 }
+
+
 
 
 export default App;
