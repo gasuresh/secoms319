@@ -82,6 +82,7 @@ const ProductsList = ({ searchTerm, products, handleQuantityChange }) => {
   {
     return (
       <Container className='bg-secondary mx-auto my-4'>
+        <h1 className="display-1 text-center">Silly Store</h1>
         <div className="row">
           {filteredProducts.map((product) => (
             <div className="col" key={product.id}>
@@ -129,6 +130,7 @@ const PaymentForm = ({formData, handleFormSubmission, handleInputChange}) => {
     const errors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const zipRegex = /^\d{5}$/;
+    const cardRegex = /^\d{16}$/;
 
   
 
@@ -138,11 +140,11 @@ const PaymentForm = ({formData, handleFormSubmission, handleInputChange}) => {
     if (!formData.email.trim() || !emailRegex.test(formData.email)) {
       errors.email = "Valid email is required";
     }
-    if (!formData.creditCard.trim()) {
-      errors.creditCard = "Credit card is required";
+    if (!formData.creditCard.trim() || !cardRegex.test(formData.creditCard)) {
+      errors.creditCard = "Please enter a valid credit card number";
     }
     if (!formData.address1.trim()) {
-      errors.address1 = "Address1 is required";
+      errors.address1 = "Address is required";
     }
     if (!formData.city.trim()) {
       errors.city = "City is required";
@@ -283,7 +285,9 @@ function App() {
   const [products, setProducts] = useState(ProductData);
   const [cart, setCart] = useState([]);
   //const [formData] = useContext(formContext);
-  //const [formData] = useState(0);
+  const [formData] = useState(0);
+  const [cartTotal, setCartTotal] = useState(0);
+  const [cartTax, setCartTax] = useState(0);
 
   useEffect(() => {
     setCart(products.filter((product) => product.quantity > 0));
@@ -386,7 +390,8 @@ function App() {
   const Cart = ({handleBackButtonClick}) => {
     
     //const [quantity, setQuantity] = useState(0);
-    const [cartTotal, setCartTotal] = useState(0);
+    // const [cartTotal, setCartTotal] = useState(0);
+    // const [cartTax, setCartTax] = useState(0);
   
     useEffect(() => {
         total();
@@ -394,10 +399,13 @@ function App() {
   
     const total = () => {
         let totalVal = 0;
+        let tax = 0;
         for (let i = 0; i < cart.length; i++) {
             totalVal += (cart[i].price * cart[i].quantity);
         }
+        tax = totalVal * 0.05
         setCartTotal(totalVal);
+        setCartTax(tax);
     };
   
     
@@ -449,8 +457,12 @@ function App() {
                 </div>
                 <div className="float-end">
                   <p className="mb-0 me-5 d-flex align-items-center">
+                    <span className="small text-muted me-2">Tax:</span>
+                    <span className="lead fw-normal">${cartTax.toFixed(2)}</span>
+                  </p>
+                  <p className="mb-0 me-5 d-flex align-items-center">
                     <span className="small text-muted me-2">Order total:</span>
-                    <span className="lead fw-normal">${cartTotal.toFixed(2)}</span>
+                    <span className="lead fw-normal">${(cartTotal + cartTax).toFixed(2)}</span>
                   </p>
                   
                 </div>
@@ -477,11 +489,6 @@ function App() {
 
   const ConfirmationView = () =>
   {
-    
-    const totalCost = cart.reduce((total, product) => total + (product.price * product.quantity), 0);
-
-    console.log(formData)
-    
 
     return (
       <>
@@ -514,8 +521,15 @@ function App() {
                 <td></td>
                 <td></td>
                 <td></td>
+                <td><strong>Tax:</strong></td>
+                <td>${cartTax.toFixed(2)}</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
                 <td><strong>Total:</strong></td>
-                <td>${totalCost.toFixed(2)}</td>
+                <td>${(cartTotal + cartTax).toFixed(2)}</td>
               </tr>
             </tbody>
           </Table>
