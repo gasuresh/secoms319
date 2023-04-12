@@ -1,10 +1,9 @@
 import './App.css';
-import React, { useState, useEffect, createContext, useContext } from 'react';
+import React, { useState, useEffect} from 'react';
 import ProductData from './product_data.json';
 import {Card, Navbar, Form, FormControl, Button, Container, Row, Col, Table} from 'react-bootstrap';
 
 
-const formContext = createContext();
 
 const Product = ({ product, onQuantityChange }) => {
   const { title, image, price, description, quantity } = product;
@@ -109,29 +108,10 @@ const BackToProducts = ({ handleBackButtonClick }) => {
   );
 };
 
-const PaymentForm = ({handleFormSubmission}) => {
+const PaymentForm = ({formData, handleFormSubmission, handleInputChange}) => {
     
   
   const [errors, setErrors] = useState({});
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    creditCard: "",
-    address1: "",
-    address2: "",
-    city: "",
-    state: "",
-    zip: "",
-  });
-
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((formData) => ({
-      ...formData,
-      [name]: value,
-    }));
-  };
-  
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -177,7 +157,6 @@ const PaymentForm = ({handleFormSubmission}) => {
   };
 
   return (
-    <formContext.Provider value={{ formData, setFormData }}>
     <Container className='bg-light mx-auto my-5'>
       <h1 className="display-6">Order Form</h1>
       <Form onSubmit={handleSubmit}>
@@ -293,15 +272,10 @@ const PaymentForm = ({handleFormSubmission}) => {
     </Form>
 
     </Container>
-    </formContext.Provider>
+    
     
   );
 }
-
-
-
-
-
 
 
 
@@ -309,7 +283,7 @@ function App() {
   const [products, setProducts] = useState(ProductData);
   const [cart, setCart] = useState([]);
   //const [formData] = useContext(formContext);
-  const [formData] = useState(0);
+  //const [formData] = useState(0);
 
   useEffect(() => {
     setCart(products.filter((product) => product.quantity > 0));
@@ -346,6 +320,26 @@ function App() {
     setIsFormSubmitted(true);
   };
 
+
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    creditCard: "",
+    address1: "",
+    address2: "",
+    city: "",
+    state: "",
+    zip: "",
+  });
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((formData) => ({
+      ...formData,
+      [name]: value,
+    }));
+  };
+
   const NewBrowse = ({ handleConfirmButtonClick }) => {
     return(
       <Navbar bg="light" expand="lg">
@@ -365,6 +359,17 @@ function App() {
     setConfirmButtonClick(true);
     setProducts(ProductData);
     setIsFormSubmitted(false);
+    setCheckoutPressed(false)
+    setFormData({
+      fullName: "",
+      email: "",
+      creditCard: "",
+      address1: "",
+      address2: "",
+      city: "",
+      state: "",
+      zip: "",
+    })
   };
   
 
@@ -474,6 +479,8 @@ function App() {
   {
     
     const totalCost = cart.reduce((total, product) => total + (product.price * product.quantity), 0);
+
+    console.log(formData)
     
 
     return (
@@ -520,7 +527,7 @@ function App() {
       {/* Display order details */}
       <p>Name: {formData.fullName}</p>
       <p>Email: {formData.email}</p>
-      <p>Credit Card: {formData.creditCard}</p>
+      <p>Credit Card: {"************" + formData.creditCard.substring(12, 16)}</p>
       <p>Address: {formData.address1}</p>
       <p>Optional Second Line: {formData.address2}</p>
       <p>City: {formData.city}</p>
@@ -557,7 +564,7 @@ function App() {
       {checkoutPressed && !isFormSubmitted && (
         <>
           <Cart handleBackButtonClick={handleBackButtonClick} />
-          <PaymentForm handleFormSubmission={handleFormSubmission} />
+          <PaymentForm handleFormSubmission={handleFormSubmission} handleInputChange = {handleInputChange} formData={formData} />
         </>
       )}
       {isFormSubmitted && (
