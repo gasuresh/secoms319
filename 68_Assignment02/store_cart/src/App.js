@@ -284,8 +284,6 @@ const PaymentForm = ({formData, handleFormSubmission, handleInputChange}) => {
 function App() {
   const [products, setProducts] = useState(ProductData);
   const [cart, setCart] = useState([]);
-  //const [formData] = useContext(formContext);
-  const [formData] = useState(0);
   const [cartTotal, setCartTotal] = useState(0);
   const [cartTax, setCartTax] = useState(0);
 
