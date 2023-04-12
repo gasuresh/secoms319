@@ -4,7 +4,6 @@ import ProductData from './product_data.json';
 import {Card, Navbar, Form, FormControl, Button, Container, Row, Col, Table} from 'react-bootstrap';
 
 
-
 const Product = ({ product, onQuantityChange }) => {
   const { title, image, price, description, quantity } = product;
 
@@ -75,7 +74,7 @@ const ProductsList = ({ searchTerm, products, handleQuantityChange }) => {
 
   if (filteredProducts.length === 0)
   {
-    return <h1 className="display-1">No Items </h1>
+    return <h1 className="display-1">No Items Found</h1>
   }
 
   else
@@ -375,22 +374,9 @@ function App() {
   };
   
 
-  /*
-  return (
-    <div>
-      {products.map((product) => (
-        <Product key={product.id} product={product} onQuantityChange={handleQuantityChange} />
-      ))}
-    </div>
-  );*/
-
   
   const Cart = ({handleBackButtonClick}) => {
-    
-    //const [quantity, setQuantity] = useState(0);
-    // const [cartTotal, setCartTotal] = useState(0);
-    // const [cartTax, setCartTax] = useState(0);
-  
+
     useEffect(() => {
         total();
     }, []);
@@ -418,10 +404,6 @@ function App() {
                     <div className="row text-muted">{el.title}</div>
                     <div className="row">{el.category}</div>
                 </div>
-                {/* <div class="col">
-                    <button type="button" variant="light" onClick={() => removeFromCart(el)} > - </button>{" "}
-                    <button type="button" variant="light" onClick={() => addToCart(el)}> + </button>
-                </div> */}
                 <div className="col">
                     ${el.price} <span className="close">&#10005;</span>{el.quantity}
                 </div>
@@ -487,7 +469,6 @@ function App() {
     );
   }
 
-  
 
   const ConfirmationView = () =>
   {
@@ -601,8 +582,6 @@ function App() {
   );
   
 }
-
-
 
 
 export default App;
