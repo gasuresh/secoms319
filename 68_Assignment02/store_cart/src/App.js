@@ -455,6 +455,10 @@ function App() {
                 </div>
                 <div className="float-end">
                   <p className="mb-0 me-5 d-flex align-items-center">
+                    <span className="small text-muted me-2">Subtotal:</span>
+                    <span className="lead fw-normal">${cartTotal.toFixed(2)}</span>
+                  </p>
+                  <p className="mb-0 me-5 d-flex align-items-center">
                     <span className="small text-muted me-2">Tax:</span>
                     <span className="lead fw-normal">${cartTax.toFixed(2)}</span>
                   </p>
@@ -515,6 +519,13 @@ function App() {
                   <td>${(product.price * product.quantity).toFixed(2)}</td>
                 </tr>
               ))}
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><strong>Subtotal:</strong></td>
+                <td>${cartTotal.toFixed(2)}</td>
+              </tr>
               <tr>
                 <td></td>
                 <td></td>
