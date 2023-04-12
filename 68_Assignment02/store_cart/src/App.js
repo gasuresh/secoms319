@@ -179,6 +179,7 @@ const PaymentForm = ({handleFormSubmission}) => {
   return (
     <formContext.Provider value={{ formData, setFormData }}>
     <Container className='bg-light mx-auto my-5'>
+      <h1 className="display-6">Order Form</h1>
       <Form onSubmit={handleSubmit}>
       <Form.Group controlId="fullName">
         <Form.Label>Full Name</Form.Label>
@@ -328,13 +329,14 @@ function App() {
   const [checkoutPressed, setCheckoutPressed] = useState(false);
   const handleCheckout = () => {
     setCheckoutPressed(true);
-    
+    setConfirmButtonClick(false);
   };
 
   const [backButtonClick, setBackButtonClick] = useState(false)
   const handleBackButtonClick  = () => {
     setCheckoutPressed(false);
     setBackButtonClick(true);
+    
 
   };
 
@@ -344,7 +346,7 @@ function App() {
     setIsFormSubmitted(true);
   };
 
-  const newBrowse = ({ handleConfirmButtonClick }) => {
+  const NewBrowse = ({ handleConfirmButtonClick }) => {
     return(
       <Navbar bg="light" expand="lg">
       <div className="d-flex">
@@ -361,6 +363,8 @@ function App() {
   const handleConfirmButtonClick = () => {
     setCart([]);
     setConfirmButtonClick(true);
+    setProducts(ProductData);
+    setIsFormSubmitted(false);
   };
   
 
@@ -470,6 +474,7 @@ function App() {
   {
     
     const totalCost = cart.reduce((total, product) => total + (product.price * product.quantity), 0);
+    
 
     return (
       <>
@@ -521,9 +526,10 @@ function App() {
       <p>City: {formData.city}</p>
       <p>State: {formData.state}</p>
       <p>Zip Code: {formData.zip}</p>
-
+      
+      <NewBrowse handleConfirmButtonClick={handleConfirmButtonClick} />
       </Container>
-      <newBrowse handleConfirmButtonClick={handleConfirmButtonClick} />
+      
 
       </>
 
@@ -532,7 +538,7 @@ function App() {
 
   return (
     <>
-      {((!checkoutPressed && !backButtonClick) || (!checkoutPressed && backButtonClick)) && (
+      {((!checkoutPressed && !backButtonClick) || (!checkoutPressed && backButtonClick) || (confirmButtonClick)) && (
         <>
           <SearchAndCheckout
           
