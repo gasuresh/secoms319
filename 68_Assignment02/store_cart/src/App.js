@@ -412,7 +412,7 @@ function App() {
         <div className="row border-top border-bottom" key={el.id}>
             <div className="row main align-items-center">
                 <div className="col-2">
-                    <img className="img-fluid" src={el.image} />
+                    <img className="img-fluid" src={el.image} alt={el.title}/>
                 </div>
                 <div className="col">
                     <div className="row text-muted">{el.title}</div>
@@ -512,7 +512,7 @@ function App() {
             <tbody>
               {cart.map((product) => (
                 <tr key={product.id}>
-                  <td><img className="img-fluid" src={product.image} style={{maxWidth: "200px"}} /></td>
+                  <td><img className="img-fluid" src={product.image} alt={product.title} style={{maxWidth: "200px"}} /></td>
                   <td>{product.title}</td>
                   <td>${product.price.toFixed(2)}</td>
                   <td>{product.quantity}</td>
