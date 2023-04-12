@@ -312,7 +312,7 @@ function App() {
   const handleBackButtonClick  = () => {
     setCheckoutPressed(false);
     setBackButtonClick(true);
-    
+    setSearchTerm("");
 
   };
 
