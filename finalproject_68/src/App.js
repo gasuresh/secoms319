@@ -68,7 +68,7 @@ function App() {
 
 
   return (
-    /*<Container>
+    <Container>
     <Row className="py-5 bg-dark">
     <Col>
     <Card className="shadow rounded-pill">
@@ -124,8 +124,8 @@ function App() {
     </Card>
   </Col>
   </Row>
-  </Container>*/
-
+  </Container>
+/*
   <Container className="py-5">
       <Row>
         <Col>
@@ -147,7 +147,7 @@ function App() {
           </Col>
         ))}
       </Row>
-    </Container>
+    </Container>*/
 
     
   );
