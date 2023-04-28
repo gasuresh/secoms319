@@ -3,6 +3,32 @@ import React, { useState, useEffect} from "react"
 import { Container, Button, ButtonGroup, Form, FormControl} from 'react-bootstrap';
 
 
+var express = require("express");
+var cors = require("cors");
+var exp = express();
+var fs = require("fs");
+var bodyParser = require("body-parser");
+
+exp.use(cors());
+exp.use(bodyParser.json());
+
+const port = "8081";
+const host = "localhost";
+
+exp.listen(port, () => {
+  console.log("App listening at http://%s:%s", host, port);
+});
+
+
+
+const { MongoClient } = require("mongodb");
+
+const url = "mongodb://127.0.0.1:27017";
+const dbName = "reactdata";
+const client = new MongoClient(url);
+const db = client.db(dbName);
+
+
 function App() {
   return (
     <>
@@ -24,10 +50,16 @@ const ProductForm = (/*{formData, handleFormSubmission, handleInputChange}*/) =>
     rate: "",
     count: "",
   });
+  
 
 
   const handleFormSubmission = () => {
-    //setIsFormSubmitted(true);
+    e.preventDefault();
+
+    exp.post('http://localhost:4000/insert', {
+      fullName: name,
+      companyRole:role
+    })
   };
   
   
