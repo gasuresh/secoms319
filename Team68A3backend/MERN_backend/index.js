@@ -5,7 +5,6 @@ const Product = require("./dataSchema");
 
 
 const app = express();
-const Product = require("./dataSchema.js");
 app.use(express.json());
 app.use(cors());
 mongoose.connect("mongodb://127.0.0.1:27017/reactdata",
@@ -68,5 +67,5 @@ app.get("/:id", async (req, resp) => {
     const oneProduct = await Product.findOne(query);
     console.log(oneProduct);
     resp.send(oneProduct);
-    };
+});
 
