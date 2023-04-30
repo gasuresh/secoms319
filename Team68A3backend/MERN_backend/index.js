@@ -1,6 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const Product = require("./dataSchema");
+
+
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -24,3 +27,12 @@ app.get("/", async (req, resp) => {
     console.log(allProducts);
     resp.send(allProducts);
 });
+
+app.get("/:id", async (req, resp) => {
+    const id = req.params.id;
+    const query = { _id: id };
+    const oneProduct = await Product.findOne(query);
+    console.log(oneProduct);
+    resp.send(oneProduct);
+});
+
