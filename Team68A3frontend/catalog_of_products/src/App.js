@@ -69,13 +69,13 @@ function App() {
 const ProductForm = (/*{formData, handleFormSubmission, handleInputChange}*/) => {
 
   const [formData, setFormData] = useState({
-    _id: 0,
+    _id: "",
     title: "",
-    price: 0.0,
+    price: "",
     description: "",
     category: "",
     image: "",
-    rating: { rate: 0.0, count: 0 },
+    rating: { rate: "", count: "" },
   });
 
 
@@ -103,22 +103,35 @@ const ProductForm = (/*{formData, handleFormSubmission, handleInputChange}*/) =>
   
 
   const handleInputChange = (event) => {
+    
     const { name, value } = event.target;
-    setFormData((formData) => ({
-      ...formData,
-      [name]: value,
-    }));
+    if (name === "count") {
+      setFormData((formData) => ({
+        ...formData,
+        rating: { ...formData.rating, count: value },
+      }));
+    } else if (name === "rate") {
+      setFormData((formData) => ({
+        ...formData,
+        rating: { ...formData.rating, rate: value },
+      }));
+    } else {
+      setFormData((formData) => ({
+        ...formData,
+        [name]: value,
+      }));
+    }
   };
 
 
   return (
     <Container className='bg-light mx-auto my-5'>
-      <h1 className="display-6">Order Form</h1>
+      <h1 className="display-6">Add New Product</h1>
       <Form onSubmit={handleSubmit}>
       <Form.Group controlId="_id">
         <Form.Label>Item Id</Form.Label>
         <Form.Control
-          type="number"
+          type="text"
           name="_id"
           value={formData._id}
           onChange={handleInputChange}
@@ -138,7 +151,7 @@ const ProductForm = (/*{formData, handleFormSubmission, handleInputChange}*/) =>
       <Form.Group controlId="price">
         <Form.Label>Price</Form.Label>
         <Form.Control
-          type="number"
+          type="text"
           name="price"
           value={formData.price}
           onChange={handleInputChange}
@@ -178,9 +191,9 @@ const ProductForm = (/*{formData, handleFormSubmission, handleInputChange}*/) =>
       <Form.Group controlId="rate">
         <Form.Label>Rating</Form.Label>
         <Form.Control
-          type="number"
+          type="text"
           name="rate"
-          value={formData.rate}
+          value={formData.rating.rate}
           onChange={handleInputChange}
         />
       </Form.Group>
@@ -188,9 +201,9 @@ const ProductForm = (/*{formData, handleFormSubmission, handleInputChange}*/) =>
       <Form.Group controlId="count">
         <Form.Label># of Ratings</Form.Label>
         <Form.Control
-          type="number"
+          type="text"
           name="count"
-          value={formData.count}
+          value={formData.rating.count}
           onChange={handleInputChange}
         />
       </Form.Group>
