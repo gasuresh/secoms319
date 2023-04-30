@@ -1,23 +1,73 @@
 import './App.css';
-import React, { useState, useEffect} from "react"
-import { Container, Button, ButtonGroup, Form, FormControl} from 'react-bootstrap';
+import React, { useState, useEffect } from "react"
+import { Container, Button, ButtonGroup, Form, FormControl, Card, Row, Col } from 'react-bootstrap';
 
 
 
 function App() {
+
+  const [createButton, setCreateButton] = useState(true);
+  const handleCreateButton = () => {
+    setCreateButton(true);
+    setReadButton(false)
+    setUpdateButton(false);
+    setDeleteButton(false);
+
+  };
+
+  const [readButton, setReadButton] = useState(false);
+  const handleReadButton = () => {
+    setCreateButton(false);
+    setReadButton(true)
+    setUpdateButton(false);
+    setDeleteButton(false);
+
+    fetch("http://localhost:4000/")
+    .then((response) => response.json())
+    .then((data) => {
+      setProducts(data);
+    });
+
+  };
+
+  const [updateButton, setUpdateButton] = useState(false);
+  const handleUpdateButton = () => {
+    setCreateButton(false);
+    setReadButton(false)
+    setUpdateButton(true);
+    setDeleteButton(false);
+
+  };
+
+  const [deleteButton, setDeleteButton] = useState(false);
+  const handleDeleteButton = () => {
+    setCreateButton(false);
+    setReadButton(false)
+    setUpdateButton(false);
+    setDeleteButton(true);
+
+  };
+
+  const [products, setProducts] = useState([]);
+
+
   return (
     <>
-    <CRUDOptions />
-    <ProductForm />
+      <Container>
+        <h1 className="display-3 text-center">Catalog of Products</h1>
+      </Container>
+      <CRUDOptions handleCreateButton= {handleCreateButton} handleReadButton = {handleReadButton} handleUpdateButton = {handleUpdateButton} handleDeleteButton = {handleDeleteButton}/>
+      {createButton && <ProductForm />}
+      {readButton && <ProductsList products={products} />}
+      {updateButton && <ProductForm />}
+      {deleteButton && <ProductForm />}
+
     </>
   );
 }
 
 const ProductForm = (/*{formData, handleFormSubmission, handleInputChange}*/) => {
-  /*const [product, setProduct] = useState([]);
-  const [viewer1, setViewer1] = useState(false);
-  const [oneProduct, setOneProduct] = useState([]);
-  const [checked4, setChecked4] = useState(false); */
+
   const [formData, setFormData] = useState({
     _id: 0,
     title: "",
@@ -27,7 +77,8 @@ const ProductForm = (/*{formData, handleFormSubmission, handleInputChange}*/) =>
     image: "",
     rating: { rate: 0.0, count: 0 },
   });
-  
+
+
 
 
   const handleSubmit = (e) => {
@@ -50,7 +101,7 @@ const ProductForm = (/*{formData, handleFormSubmission, handleInputChange}*/) =>
       });
   }
   
-  
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData((formData) => ({
@@ -58,6 +109,7 @@ const ProductForm = (/*{formData, handleFormSubmission, handleInputChange}*/) =>
       [name]: value,
     }));
   };
+
 
   return (
     <Container className='bg-light mx-auto my-5'>
@@ -146,20 +198,62 @@ const ProductForm = (/*{formData, handleFormSubmission, handleInputChange}*/) =>
       <Button type="submit">Submit</Button>
     </Form>
 
+
     </Container>
-    
-    
+
   );
 }
 
-const CRUDOptions = () => {
+const Product = (product) => {
+  const {_id, title, price, description, image, category, rating } = product.product;
+  console.log(product)
+
+  return (
+    <Card style={{ width: '15rem', margin: '.5rem' }}>
+      <Card.Img variant="top" src={image} />
+      <Card.Body>
+        <Card.Title>{title}</Card.Title>
+        <Card.Subtitle className="mb-2 text-muted">{category}</Card.Subtitle>
+        <Card.Text>{description}</Card.Text>
+        <Card.Text>Price: ${price}</Card.Text>
+        {rating && (
+          <Card.Text>
+            Rating: {rating.rate} ({rating.count} reviews)
+          </Card.Text>
+        )}
+      </Card.Body>
+    </Card>
+  );
+};
+
+
+
+const ProductsList = ({ products }) => {
+  {console.log(products)}
+  return (
+    <Container>
+      <Row xs={1} sm={2} md={3} lg={4}>
+        {products.map((product) => (
+          <Col key={product._id}>
+            <Product product={product} />
+          </Col>
+        ))}
+      </Row>
+    </Container>
+  );
+};
+
+
+
+
+const CRUDOptions = ({handleCreateButton, handleReadButton, handleUpdateButton, handleDeleteButton}) => {
   return (
     <Container className='bg-dark mx-auto my-4 w-75'>
       <ButtonGroup className="d-flex justify-content-center">
-        <Button className="btn-block mx-1" variant="primary">Create</Button>
-        <Button className="btn-block mx-1" variant="secondary">Read</Button>
-        <Button className="btn-block mx-1" variant="info">Update</Button>
-        <Button className="btn-block mx-1" variant="danger">Delete</Button>
+        <Button className="btn-block mx-1" variant="primary" onClick={handleCreateButton}>Create</Button>
+        <Button className="btn-block mx-1" variant="secondary" onClick={handleReadButton}>Read</Button>
+        <Button className="btn-block mx-1" variant="info" onClick={handleUpdateButton}>Update</Button>
+        <Button className="btn-block mx-1" variant="danger" onClick={handleDeleteButton}>Delete</Button>
       </ButtonGroup>
     </Container>
 
