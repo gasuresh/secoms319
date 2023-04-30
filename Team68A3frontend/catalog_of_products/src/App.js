@@ -69,22 +69,38 @@ function App() {
 const ProductForm = (/*{formData, handleFormSubmission, handleInputChange}*/) => {
 
   const [formData, setFormData] = useState({
-    id: "",
+    _id: 0,
     title: "",
-    price: "",
+    price: 0.0,
     description: "",
     category: "",
     image: "",
-    rate: "",
-    count: "",
+    rating: { rate: 0.0, count: 0 },
   });
 
 
 
-  const handleFormSubmission = () => {
 
-  };
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(e.target.value);
+    fetch("http://localhost:4000/insert", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Post a new product completed");
+        console.log(data);
+        if (data) {
+          //const keys = Object.keys(data);
+          const value = Object.values(data);
+          alert(value);
+        }
+      });
+  }
+  
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -95,167 +111,93 @@ const ProductForm = (/*{formData, handleFormSubmission, handleInputChange}*/) =>
   };
 
 
-  const [errors, setErrors] = useState({});
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const errors = validateFormData(formData);
-    if (Object.keys(errors).length === 0) {
-      // submit the form
-      handleFormSubmission()
-
-    } else {
-      setErrors(errors);
-    }
-  };
-
-  const validateFormData = (formData) => {
-    const errors = {};
-
-    if (!formData.id.trim()) {
-      errors.id = "Id is required";
-    }
-    if (!formData.title.trim()) {
-      errors.title = "Title is required";
-    }
-    if (!formData.price.trim()) {
-      errors.price = "Price is required";
-    }
-    if (!formData.description.trim()) {
-      errors.description = "Description is required";
-    }
-    if (!formData.category.trim()) {
-      errors.category = "Category is required";
-    }
-    if (!formData.image.trim()) {
-      errors.image = "Image is required";
-    }
-    if (!formData.rate) {
-      errors.rate = "Rating is required";
-    }
-    if (!formData.count) {
-      errors.count = "Count is required";
-    }
-    return errors;
-  };
-
   return (
     <Container className='bg-light mx-auto my-5'>
       <h1 className="display-6">Order Form</h1>
       <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="id">
-          <Form.Label>Item Id</Form.Label>
-          <Form.Control
-            type="text"
-            name="id"
-            value={formData.id}
-            onChange={handleInputChange}
-            isInvalid={!!errors.id}
-          />
-          <Form.Control.Feedback type="invalid">
-            {errors.id}
-          </Form.Control.Feedback>
-        </Form.Group>
+      <Form.Group controlId="_id">
+        <Form.Label>Item Id</Form.Label>
+        <Form.Control
+          type="number"
+          name="_id"
+          value={formData._id}
+          onChange={handleInputChange}
+        />
+      </Form.Group>
 
-        <Form.Group controlId="title">
-          <Form.Label>Title</Form.Label>
-          <Form.Control
-            type="text"
-            name="title"
-            value={formData.title}
-            onChange={handleInputChange}
-            isInvalid={!!errors.title}
-          />
-          <Form.Control.Feedback type="invalid">
-            {errors.title}
-          </Form.Control.Feedback>
-        </Form.Group>
+      <Form.Group controlId="title">
+        <Form.Label>Title</Form.Label>
+        <Form.Control
+          type="text"
+          name="title"
+          value={formData.title}
+          onChange={handleInputChange}
+        />
+      </Form.Group>
 
-        <Form.Group controlId="price">
-          <Form.Label>Price</Form.Label>
-          <Form.Control
-            type="text"
-            name="price"
-            value={formData.price}
-            onChange={handleInputChange}
-            isInvalid={!!errors.price}
-          />
-          <Form.Control.Feedback type="invalid">
-            {errors.price}
-          </Form.Control.Feedback>
-        </Form.Group>
+      <Form.Group controlId="price">
+        <Form.Label>Price</Form.Label>
+        <Form.Control
+          type="number"
+          name="price"
+          value={formData.price}
+          onChange={handleInputChange}
+        />
+      </Form.Group>
 
-        <Form.Group controlId="description">
-          <Form.Label>Description</Form.Label>
-          <Form.Control
-            type="text"
-            name="description"
-            value={formData.description}
-            onChange={handleInputChange}
-            isInvalid={!!errors.description}
-          />
-          <Form.Control.Feedback type="invalid">
-            {errors.description}
-          </Form.Control.Feedback>
-        </Form.Group>
+      <Form.Group controlId="description">
+        <Form.Label>Description</Form.Label>
+        <Form.Control
+          type="text"
+          name="description"
+          value={formData.description}
+          onChange={handleInputChange}
+        />
+      </Form.Group>
 
-        <Form.Group controlId="category">
-          <Form.Label>Category</Form.Label>
-          <Form.Control
-            type="text"
-            name="category"
-            value={formData.category}
-            onChange={handleInputChange}
-          />
-          <Form.Control.Feedback type="invalid">
-            {errors.category}
-          </Form.Control.Feedback>
-        </Form.Group>
+      <Form.Group controlId="category">
+        <Form.Label>Category</Form.Label>
+        <Form.Control
+          type="text"
+          name="category"
+          value={formData.category}
+          onChange={handleInputChange}
+        />
+      </Form.Group>
 
-        <Form.Group controlId="image">
-          <Form.Label>Image</Form.Label>
-          <Form.Control
-            type="text"
-            name="image"
-            value={formData.image}
-            onChange={handleInputChange}
-            isInvalid={!!errors.image}
-          />
-          <Form.Control.Feedback type="invalid">
-            {errors.image}
-          </Form.Control.Feedback>
-        </Form.Group>
+      <Form.Group controlId="image">
+        <Form.Label>Image</Form.Label>
+        <Form.Control
+          type="text"
+          name="image"
+          value={formData.image}
+          onChange={handleInputChange}
+        />
+      </Form.Group>
 
-        <Form.Group controlId="rate">
-          <Form.Label>Rating</Form.Label>
-          <Form.Control
-            type="text"
-            name="rate"
-            value={formData.rate}
-            onChange={handleInputChange}
-            isInvalid={!!errors.rate}
-          />
-          <Form.Control.Feedback type="invalid">
-            {errors.rate}
-          </Form.Control.Feedback>
-        </Form.Group>
+      <Form.Group controlId="rate">
+        <Form.Label>Rating</Form.Label>
+        <Form.Control
+          type="number"
+          name="rate"
+          value={formData.rate}
+          onChange={handleInputChange}
+        />
+      </Form.Group>
 
-        <Form.Group controlId="count">
-          <Form.Label># of Ratings</Form.Label>
-          <Form.Control
-            type="text"
-            name="count"
-            value={formData.count}
-            onChange={handleInputChange}
-            isInvalid={!!errors.count}
-          />
-          <Form.Control.Feedback type="invalid">
-            {errors.count}
-          </Form.Control.Feedback>
-        </Form.Group>
+      <Form.Group controlId="count">
+        <Form.Label># of Ratings</Form.Label>
+        <Form.Control
+          type="number"
+          name="count"
+          value={formData.count}
+          onChange={handleInputChange}
+        />
+      </Form.Group>
 
-        <Button type="submit">Submit</Button>
-      </Form>
+      <Button type="submit">Submit</Button>
+    </Form>
+
 
     </Container>
 
