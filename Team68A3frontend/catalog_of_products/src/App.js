@@ -60,7 +60,7 @@ function App() {
       {createButton && <ProductForm />}
       {readButton && <ProductsList products={products} />}
       {updateButton && <ProductForm />}
-      {deleteButton && <ProductForm />}
+      {deleteButton && <DeleteForm />}
 
     </>
   );
@@ -256,6 +256,37 @@ const ProductsList = ({ products }) => {
   );
 };
 
+const DeleteForm = () => {
+  const [checked4, setChecked4] = useState(false);
+  const [index, setIndex] = useState(0);
+
+  const handleChange = (event) => {
+    setIndex(event.target.value);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(index);
+    // Do something with the index value, e.g. pass it to a parent component
+  };
+
+  return (
+    <Container className='bg-light mx-auto my-5'>
+    <Form onSubmit={handleSubmit}>
+      <Form.Group controlId="formIndex">
+        <Form.Label>Enter an Index:</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter index"
+          value={index}
+          onChange={handleChange}
+        />
+      </Form.Group>
+      <button type="submit">Submit</button>
+    </Form>
+    </Container>
+  );
+};
 
 
 
