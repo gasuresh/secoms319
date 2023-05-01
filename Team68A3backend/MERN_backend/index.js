@@ -3,6 +3,9 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const Product = require("./dataSchema");
 
+app.use(express.static("public"))
+app.use("/images", express.static("images"))
+
 
 const app = express();
 app.use(express.json());
