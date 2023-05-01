@@ -69,3 +69,24 @@ app.get("/:id", async (req, resp) => {
     resp.send(oneProduct);
 });
 
+app.put("/update/:id", async (req, res) => {
+    try {
+      const productId = req.params.id;
+      const update = req.body;
+
+      const query = { _id: productId };
+  
+      const result = await Product.findByIdAndUpdate(query, update);
+  
+      if (!result) {
+        res.status(404).send({ message: "Product not found" });
+      } else {
+        res.send({ message: "Product updated successfully" });
+      }
+    } catch (err) {
+      console.log("Error while updating product: " + err);
+      res.status(500).send({ message: "Internal server error" });
+    }
+  });
+  
+
