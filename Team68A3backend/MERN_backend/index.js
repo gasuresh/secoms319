@@ -88,5 +88,21 @@ app.put("/update/:id", async (req, res) => {
       res.status(500).send({ message: "Internal server error" });
     }
   });
+
+
+  app.delete("/delete", async (req, res) => {
+    console.log("Delete :", req.body);
+    try {
+      const query = { _id: req.body._id };
+      await Product.deleteOne(query);
+      const messageResponse = {
+        message: `Product ${req.body._id} deleted correctly`,
+      };
+      res.send(JSON.stringify(messageResponse));
+    } catch (err) {
+      console.log("Error while deleting :" + p_id + " " + err);
+    }
+  });
+
   
 

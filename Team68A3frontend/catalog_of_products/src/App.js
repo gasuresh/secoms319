@@ -71,16 +71,19 @@ function App() {
         <h1 className="display-3 text-center">Catalog of Products</h1>
       </Container>
       <CRUDOptions handleCreateButton={handleCreateButton} handleReadButton={handleReadButton} handleUpdateButton={handleUpdateButton} handleDeleteButton={handleDeleteButton} />
-      {createButton && <ProductForm createButton={createButton} />}
+
+      {createButton && <ProductForm createButton={createButton} deleteButton={deleteButton}/>}
       {readButton && <ProductsList products={products} />}
-      {updateButton && <ProductForm createButton={createButton}/>}
-      {deleteButton && <ProductForm />}
+      {updateButton && <ProductForm createButton={createButton} deleteButton={deleteButton}/>}
+      {deleteButton && <ProductForm createButton={createButton} deleteButton={deleteButton}/>}
+
 
     </>
   );
 }
 
-const ProductForm = ({createButton}) => {
+const ProductForm = ({createButton, deleteButton}) => {
+
 
   const [formData, setFormData] = useState({
     _id: "",
@@ -146,6 +149,31 @@ const ProductForm = ({createButton}) => {
   }
 
 
+  const handleSubmitDelete = (e) => {
+    e.preventDefault();
+    deleteOneProduct(formData._id);
+  };
+
+  function deleteOneProduct(deleteid) {
+    console.log("Product to delete :", deleteid);
+    fetch("http://localhost:4000/delete/", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ _id: deleteid }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Delete a product completed : ", deleteid);
+        console.log(data);
+        if (data) {
+          //const keys = Object.keys(data);
+          const value = Object.values(data);
+          alert(value);
+        }
+      });
+  }
+
+
   const handleInputChange = (event) => {
 
     const { name, value } = event.target;
@@ -166,12 +194,20 @@ const ProductForm = ({createButton}) => {
       }));
     }
   };
-
+   
+  
 
   return (
     <Container className='bg-light mx-auto my-5'>
-  {createButton ? <h1 className="display-6">Add New Product</h1> : <h1 className="display-6">Update Product</h1>}
-  <Form onSubmit={createButton ? handleSubmit : handleSubmitUpdate}>
+
+  {createButton && <h1 className="display-6">Add New Product</h1>}
+  {deleteButton && <h1 className="display-6">Delete Product</h1>}
+  {!createButton && !deleteButton && <h1 className="display-6">Update Product</h1>}
+  <Form onSubmit={createButton ? handleSubmit : deleteButton ? handleSubmitDelete : handleSubmitUpdate}>
+
+
+
+
     <Form.Group controlId="_id">
       <Form.Label>Item Id</Form.Label>
       <Form.Control
@@ -201,7 +237,9 @@ const ProductForm = ({createButton}) => {
         name="price"
         value={formData.price}
         onChange={handleInputChange}
-        disabled={false} // Always enable the price field
+
+        disabled={deleteButton} // Always enable the price field
+
       />
     </Form.Group>
 
@@ -260,11 +298,10 @@ const ProductForm = ({createButton}) => {
       />
     </Form.Group>
 
-    <Button type="submit">Submit</Button>
+
+    <Button type="submit">{deleteButton ? "Delete" : "Submit"}</Button>
   </Form>
 </Container>
-
-
   );
 }
 
@@ -293,6 +330,7 @@ const Product = (product) => {
 
 
 const ProductsList = ({ products }) => {
+
   return (
     <Container>
       <Row xs={1} sm={2} md={3} lg={4}>
