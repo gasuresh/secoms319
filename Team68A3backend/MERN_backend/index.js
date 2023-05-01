@@ -3,13 +3,13 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const Product = require("./dataSchema");
 
-app.use(express.static("public"))
-app.use("/images", express.static("images"))
-
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(express.static("public"))
+app.use("/images", express.static("images"))
+
 mongoose.connect("mongodb://127.0.0.1:27017/reactdata",
     {
         dbName: "reactdata",
