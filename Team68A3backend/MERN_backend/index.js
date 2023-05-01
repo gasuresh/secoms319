@@ -89,6 +89,7 @@ app.put("/update/:id", async (req, res) => {
     }
   });
 
+
   app.delete("/delete", async (req, res) => {
     console.log("Delete :", req.body);
     try {
@@ -102,5 +103,6 @@ app.put("/update/:id", async (req, res) => {
       console.log("Error while deleting :" + p_id + " " + err);
     }
   });
+
   
 

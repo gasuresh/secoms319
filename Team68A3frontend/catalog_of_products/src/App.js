@@ -71,16 +71,19 @@ function App() {
         <h1 className="display-3 text-center">Catalog of Products</h1>
       </Container>
       <CRUDOptions handleCreateButton={handleCreateButton} handleReadButton={handleReadButton} handleUpdateButton={handleUpdateButton} handleDeleteButton={handleDeleteButton} />
+
       {createButton && <ProductForm createButton={createButton} deleteButton={deleteButton}/>}
       {readButton && <ProductsList products={products} />}
       {updateButton && <ProductForm createButton={createButton} deleteButton={deleteButton}/>}
       {deleteButton && <ProductForm createButton={createButton} deleteButton={deleteButton}/>}
+
 
     </>
   );
 }
 
 const ProductForm = ({createButton, deleteButton}) => {
+
 
   const [formData, setFormData] = useState({
     _id: "",
@@ -145,6 +148,7 @@ const ProductForm = ({createButton, deleteButton}) => {
       });
   }
 
+
   const handleSubmitDelete = (e) => {
     e.preventDefault();
     deleteOneProduct(formData._id);
@@ -168,6 +172,7 @@ const ProductForm = ({createButton, deleteButton}) => {
         }
       });
   }
+
 
   const handleInputChange = (event) => {
 
@@ -194,10 +199,14 @@ const ProductForm = ({createButton, deleteButton}) => {
 
   return (
     <Container className='bg-light mx-auto my-5'>
+
   {createButton && <h1 className="display-6">Add New Product</h1>}
   {deleteButton && <h1 className="display-6">Delete Product</h1>}
   {!createButton && !deleteButton && <h1 className="display-6">Update Product</h1>}
   <Form onSubmit={createButton ? handleSubmit : deleteButton ? handleSubmitDelete : handleSubmitUpdate}>
+
+
+
 
     <Form.Group controlId="_id">
       <Form.Label>Item Id</Form.Label>
@@ -228,7 +237,9 @@ const ProductForm = ({createButton, deleteButton}) => {
         name="price"
         value={formData.price}
         onChange={handleInputChange}
+
         disabled={deleteButton} // Always enable the price field
+
       />
     </Form.Group>
 
@@ -287,11 +298,10 @@ const ProductForm = ({createButton, deleteButton}) => {
       />
     </Form.Group>
 
+
     <Button type="submit">{deleteButton ? "Delete" : "Submit"}</Button>
   </Form>
 </Container>
-
-
   );
 }
 
@@ -320,7 +330,7 @@ const Product = (product) => {
 
 
 const ProductsList = ({ products }) => {
-  { console.log(products) }
+
   return (
     <Container>
       <Row xs={1} sm={2} md={3} lg={4}>
