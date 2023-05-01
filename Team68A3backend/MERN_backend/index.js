@@ -69,3 +69,38 @@ app.get("/:id", async (req, resp) => {
     resp.send(oneProduct);
 });
 
+app.put("/update/:id", async (req, res) => {
+    try {
+      const productId = req.params.id;
+      const update = req.body;
+
+      const query = { _id: productId };
+  
+      const result = await Product.findByIdAndUpdate(query, update);
+  
+      if (!result) {
+        res.status(404).send({ message: "Product not found" });
+      } else {
+        res.send({ message: "Product updated successfully" });
+      }
+    } catch (err) {
+      console.log("Error while updating product: " + err);
+      res.status(500).send({ message: "Internal server error" });
+    }
+  });
+
+  app.delete("/delete", async (req, res) => {
+    console.log("Delete :", req.body);
+    try {
+      const query = { _id: req.body._id };
+      await Product.deleteOne(query);
+      const messageResponse = {
+        message: `Product ${req.body._id} deleted correctly`,
+      };
+      res.send(JSON.stringify(messageResponse));
+    } catch (err) {
+      console.log("Error while deleting :" + p_id + " " + err);
+    }
+  });
+  
+

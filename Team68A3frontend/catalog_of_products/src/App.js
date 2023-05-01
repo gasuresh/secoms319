@@ -145,6 +145,29 @@ const ProductForm = ({createButton, deleteButton}) => {
       });
   }
 
+  const handleSubmitDelete = (e) => {
+    e.preventDefault();
+    deleteOneProduct(formData._id);
+  };
+
+  function deleteOneProduct(deleteid) {
+    console.log("Product to delete :", deleteid);
+    fetch("http://localhost:4000/delete/", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ _id: deleteid }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Delete a product completed : ", deleteid);
+        console.log(data);
+        if (data) {
+          //const keys = Object.keys(data);
+          const value = Object.values(data);
+          alert(value);
+        }
+      });
+  }
 
   const handleInputChange = (event) => {
 
@@ -167,9 +190,7 @@ const ProductForm = ({createButton, deleteButton}) => {
     }
   };
    
-  const handleSubmitDelete = (e) => {
-
-  }
+  
 
   return (
     <Container className='bg-light mx-auto my-5'>
