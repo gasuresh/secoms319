@@ -293,7 +293,6 @@ const Product = (product) => {
 
 
 const ProductsList = ({ products }) => {
-  { console.log(products) }
   return (
     <Container>
       <Row xs={1} sm={2} md={3} lg={4}>
