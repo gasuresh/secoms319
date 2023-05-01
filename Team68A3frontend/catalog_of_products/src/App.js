@@ -1,6 +1,6 @@
 import './App.css';
-import React, { useState, useEffect } from "react"
-import { Container, Button, ButtonGroup, Form, FormControl, Card, Row, Col } from 'react-bootstrap';
+import React, { useState } from "react"
+import { Container, Button, ButtonGroup, Form, Card, Row, Col } from 'react-bootstrap';
 
 
 
@@ -70,12 +70,13 @@ function App() {
       <Container>
         <h1 className="display-3 text-center">Catalog of Products</h1>
       </Container>
-      <CRUDOptions handleCreateButton={handleCreateButton} handleReadButton={handleReadButton} handleUpdateButton={handleUpdateButton} handleDeleteButton={handleDeleteButton} />
+      <CRUDOptions handleCreateButton={handleCreateButton} handleReadButton={handleReadButton} handleUpdateButton={handleUpdateButton} handleDeleteButton={handleDeleteButton} handleAboutUs={handleAboutUs}/>
 
       {createButton && <ProductForm createButton={createButton} deleteButton={deleteButton}/>}
       {readButton && <ProductsList products={products} />}
       {updateButton && <ProductForm createButton={createButton} deleteButton={deleteButton}/>}
       {deleteButton && <ProductForm createButton={createButton} deleteButton={deleteButton}/>}
+      {aboutUsButton && <AboutUs />}
 
 
     </>
@@ -306,7 +307,7 @@ const ProductForm = ({createButton, deleteButton}) => {
 }
 
 const Product = (product) => {
-  const { _id, title, price, description, image, category, rating } = product.product;
+  const {title, price, description, image, category, rating } = product.product;
   console.log(product)
 
   return (
@@ -344,10 +345,46 @@ const ProductsList = ({ products }) => {
   );
 };
 
+const AboutUs = () => {
+  return (
+    <Container>
+      <Row>
+        <Col>
+          <h1>Project Credits</h1>
+          <hr />
+          <p>
+            This project uses CRUD operations and a MERN tech-stack to update and extend our previous Catalog of Products Assignments. It uses data from fakestore API!
+          </p>
+          <hr />
+          <h2>Student Information</h2>
+          <p>
+            <strong>Will Ernatt</strong>
+            <br />
+            Email: wernatt@iastate.edu
+          </p>
+          <p>
+            <strong>Gautham Suresh</strong>
+            <br />
+            Email: gsuresh1@iastate.edu
+          </p>
+          <hr />
+          <h2>Course Information</h2>
+          <p>
+            Course Number: COM S 319
+            <br />
+            Course Name: Construction of User Interfaces
+            <br />
+            Date: April 2023
+            <br />
+            Professor Name: Dr. Abraham Aldaco
+          </p>
+        </Col>
+      </Row>
+    </Container>
+  );
+};
 
-
-
-const CRUDOptions = ({ handleCreateButton, handleReadButton, handleUpdateButton, handleDeleteButton }) => {
+const CRUDOptions = ({ handleCreateButton, handleReadButton, handleUpdateButton, handleDeleteButton, handleAboutUs }) => {
   return (
     <Container className='bg-dark mx-auto my-4 w-75'>
       <ButtonGroup className="d-flex justify-content-center">
@@ -355,7 +392,7 @@ const CRUDOptions = ({ handleCreateButton, handleReadButton, handleUpdateButton,
         <Button className="btn-block mx-1" variant="secondary" onClick={handleReadButton}>Read</Button>
         <Button className="btn-block mx-1" variant="info" onClick={handleUpdateButton}>Update</Button>
         <Button className="btn-block mx-1" variant="danger" onClick={handleDeleteButton}>Delete</Button>
-        <Button className="btn-block mx-1" variant="danger" onClick={handleDeleteButton}>About Us</Button>
+        <Button className="btn-block mx-1" variant="success" onClick={handleAboutUs}>About Us</Button>
       </ButtonGroup>
     </Container>
 
