@@ -9,10 +9,23 @@ import ConfirmationView from './ConfView/ConfirmationView';
 import NewBrowse from './ConfView/NewBrowse';
 
 function App() {
-  const [products, setProducts] = useState(ProductData);
+  
+
+
+  const [products, setProducts] = useState(null);
+  console.log(products);
   const [cart, setCart] = useState([]);
   const [cartTotal, setCartTotal] = useState(0);
   const [cartTax, setCartTax] = useState(0);
+
+  const fetchProduct = async () => {
+    const response = await fetch(`http://localhost:4000/`);
+    const product = await response.json();
+    console.log(product)
+    setProducts(product);
+  };
+  
+  console.log(products);
 
   useEffect(() => {
     setCart(products.filter((product) => product.quantity > 0));
