@@ -1,12 +1,12 @@
 import React from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 
-function RegistrationPage({handleSwitchToLogin, handleSwitchToRegister, handleRegistrationSubmit, handleLogRegInputChange}) {
+function RegistrationPage({handleSwitchToLogin, handleSwitchToRegister, handleRegistrationSubmit, handleLogRegInputChange, hidden}) {
     const formType = "registration";
 
     return (
         <>
-            <Container>
+            <Container hidden = {hidden}>
                 <Row className="justify-content-center mt-5">
                     <Col md={6}>
                         <h1 className="text-center display-3 mb-4">Silly Store</h1>

@@ -7,6 +7,8 @@ function App() {
   const [switchToLogin, setSwitchToLogin] = useState(true);
   const [switchToRegister, setSwitchToRegister] = useState(false);
 
+  const [currUser, setCurrUser] = useState(null);
+
   const handleSwitchToLogin = () => {
     setSwitchToLogin(true);
     setSwitchToRegister(false);
@@ -96,6 +98,7 @@ function App() {
         if (data) {
           setSwitchToLogin(false);
           setSwitchToRegister(false);
+          setCurrUser(data);
         }
       })
       .catch((error) => {
@@ -110,20 +113,21 @@ function App() {
 
   return (
     <>
-      {switchToLogin &&
         <LoginPage
           handleSwitchToLogin={handleSwitchToLogin}
           handleSwitchToRegister={handleSwitchToRegister}
           handleLoginSubmit={handleLoginSubmit}
           handleLogRegInputChange={handleLogRegInputChange}
-        />}
-      {switchToRegister &&
+          hidden={!switchToLogin}
+        />
+    
         <RegistrationPage
           handleSwitchToLogin={handleSwitchToLogin}
           handleSwitchToRegister={handleSwitchToRegister}
           handleRegistrationSubmit={handleRegistrationSubmit}
           handleLogRegInputChange={handleLogRegInputChange}
-        />}
+          hidden={!switchToRegister}
+        />
     </>
   );
 }

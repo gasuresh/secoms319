@@ -1,15 +1,15 @@
 import React from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 
-function LoginPage({handleSwitchToLogin, handleSwitchToRegister, handleLoginSubmit, handleLogRegInputChange}) {
+function LoginPage({handleSwitchToLogin, handleSwitchToRegister, handleLoginSubmit, handleLogRegInputChange, hidden}) {
 
   const formType = "login";
 
   return (
-    <div className="login-page">
+    <div className="login-page bg-secondary bg-gradient bg-opacity-25" hidden = {hidden} >
 
       <Container>
-        <Row className="justify-content-center mt-5">
+        <Row className="justify-content-center mt-5 ">
           <Col md={6}>
             <h1 className="text-center display-3 mb-4">Silly Store</h1>
             <h2 className="text-center display-6 mb-4">Login</h2>

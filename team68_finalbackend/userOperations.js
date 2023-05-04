@@ -27,11 +27,9 @@ app.get("/findUser", async (req, res) => {
     const { email, password } = req.query;
     const query = { email, password };
     const user = await User.findOne(query);
-    if (user) {
-        res.send(user);
-    } else {
-        res.send({});
-    }
+    
+    res.send(user);
+   
 });
 
 app.post("/registerUser", async (req, res) => {
