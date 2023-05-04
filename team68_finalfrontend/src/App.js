@@ -12,18 +12,23 @@ function App() {
   
 
 
-  const [products, setProducts] = useState(null);
-  console.log(products);
+  const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const [cartTotal, setCartTotal] = useState(0);
   const [cartTax, setCartTax] = useState(0);
 
-  const fetchProduct = async () => {
-    const response = await fetch(`http://localhost:4000/`);
-    const product = await response.json();
-    console.log(product)
-    setProducts(product);
-  };
+
+  
+  useEffect(() => {
+  fetch("http://localhost:4000/")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setProducts(data);
+      });
+  }, []);
+
+
   
   console.log(products);
 
@@ -101,6 +106,12 @@ function App() {
       state: "",
       zip: "",
     })
+    fetch("http://localhost:4000/")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setProducts(data);
+      });
   };
   
 
