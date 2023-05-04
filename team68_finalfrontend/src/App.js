@@ -1,3 +1,4 @@
+
 import ProductsList from './ListView/ProductsList';
 import SearchAndCheckout from './ListView/SearchAndCheckout';
 import React, { useState, useEffect} from 'react';
@@ -7,6 +8,9 @@ import PaymentForm from './CartView/PaymentForm';
 import Cart from './CartView/Cart';
 import ConfirmationView from './ConfView/ConfirmationView';
 import NewBrowse from './ConfView/NewBrowse';
+import LoginPage from './LoginAndRegistration/LoginPage';
+import RegistrationPage from './LoginAndRegistration/RegistrationPage';
+
 
 function App() {
   
@@ -16,7 +20,21 @@ function App() {
   const [cart, setCart] = useState([]);
   const [cartTotal, setCartTotal] = useState(0);
   const [cartTax, setCartTax] = useState(0);
+  const [loginInfo, setLoginInfo] = useState({
+    email: '',
+    password: ''
+  });
+  
+  const [registrationInfo, setRegistrationInfo] = useState({
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
+  const [switchToLogin, setSwitchToLogin] = useState(true);
+  const [switchToRegister, setSwitchToRegister] = useState(false);
 
+  const [currUser, setCurrUser] = useState(null);
 
   
   useEffect(() => {
@@ -113,6 +131,99 @@ function App() {
         setProducts(data);
       });
   };
+
+
+  
+
+  const handleSwitchToLogin = () => {
+    setSwitchToLogin(true);
+    setSwitchToRegister(false);
+  };
+
+  const handleSwitchToRegister = () => {
+    setSwitchToLogin(false);
+    setSwitchToRegister(true);
+  };
+
+  
+  
+  const handleLogRegInputChange = (event, formType) => {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+  
+    if (formType === "login") {
+      setLoginInfo(prevState => ({
+        ...prevState,
+        [name]: value
+      }));
+    } else if (formType === "registration") {
+      setRegistrationInfo(prevState => ({
+        ...prevState,
+        [name]: value
+      }));
+    }
+  };
+  
+
+  const handleRegistrationSubmit = (e) => {
+    e.preventDefault();
+
+    console.log(e.target.value)
+    if (registrationInfo.password !== registrationInfo.confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+  
+
+    const newUser = {
+      email: registrationInfo.email,
+      password: registrationInfo.password,
+      username: registrationInfo.username,
+    };
+
+    console.log(newUser);
+  
+    fetch("http://localhost:4000/registerUser", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newUser),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("User creation completed");
+        alert("User created successfully!");
+        handleSwitchToLogin();
+      });
+
+      
+  };
+
+  const handleLoginSubmit = (e) => {
+    e.preventDefault();
+    const { email, password } = loginInfo;
+    fetch(`http://localhost:4000/findUser?email=${email}&password=${password}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('User not found');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        
+        if (data) {
+          setSwitchToLogin(false);
+          setSwitchToRegister(false);
+          setCurrUser(data);
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        alert('Invalid credentials');
+      });
+  }
+
+  
   
 
   
@@ -120,6 +231,22 @@ function App() {
 
   return (
     <>
+
+        <LoginPage
+          handleSwitchToLogin={handleSwitchToLogin}
+          handleSwitchToRegister={handleSwitchToRegister}
+          handleLoginSubmit={handleLoginSubmit}
+          handleLogRegInputChange={handleLogRegInputChange}
+          hidden={!switchToLogin}
+        />
+    
+        <RegistrationPage
+          handleSwitchToLogin={handleSwitchToLogin}
+          handleSwitchToRegister={handleSwitchToRegister}
+          handleRegistrationSubmit={handleRegistrationSubmit}
+          handleLogRegInputChange={handleLogRegInputChange}
+          hidden={!switchToRegister}
+        />
       {((!checkoutPressed && !backButtonClick) || (!checkoutPressed && backButtonClick) || (confirmButtonClick)) && (
         <>
           <SearchAndCheckout
@@ -151,6 +278,7 @@ function App() {
         </>
 
       )}
+
 
     </>
   );
