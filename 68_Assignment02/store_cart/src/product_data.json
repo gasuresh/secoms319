@@ -1,6 +1,6 @@
 [
   {
-    "id": 1,
+    "_id": 1,
     "title": "Bowling Pin Hat",
     "price": 109.95,
     "description": "Strike! Double! Turkey! A Perfect Game! This playful pin hat will have you feeling like you're at the lanes in now time! Just watch out for any fearsome bowling balls heading your way! 😂",
@@ -10,7 +10,7 @@
     "quantity": 0
   },
   {
-    "id": 2,
+    "_id": 2,
     "title": "Pirate Captain Hat",
     "price": 22.3,
     "description": "Arrgh matey! If you don't buy this epic pirate hat and swab the deck I'll make you walk the plank! Arrgh!",
@@ -20,7 +20,7 @@
     "quantity": 0
   },
   {
-    "id": 3,
+    "_id": 3,
     "title": "Poop Emoji Hat",
     "price": 55.99,
     "description": "Celebrate your love of the funniest emoji ever designed with this humorous poop hat. Dazzle your friends with your fecal flair! ",
@@ -30,7 +30,7 @@
     "quantity": 0
   },
   {
-    "id": 4,
+    "_id": 4,
     "title": "Shark Hat",
     "price": 15.99,
     "description": "Aaaahh! This frightened fellow seems to have fallen victim to our scary shark hat! Buy it for yourself, if you dare....😱",
@@ -40,7 +40,7 @@
     "quantity": 0
   },
   {
-    "id": 5,
+    "_id": 5,
     "title": "Taco Hat",
     "price": 695,
     "description": "Mmm mmm, so good and tasty! Try our taco hat to show your love for one of the world's tastiest treats! 🤤",
@@ -50,7 +50,7 @@
     "quantity": 0
   },
   {
-    "id": 6,
+    "_id": 6,
     "title": "Watermelon Hat",
     "price": 168,
     "description": "Who's this silly feller, in this mouthwatering helmet? It could be YOU 🫵, yes YOU 🫵, if YOU 🫵 purchase our funny Watermelon Hat.",
@@ -60,7 +60,7 @@
     "quantity": 0
   },
   {
-    "id": 7,
+    "_id": 7,
     "title": "Gary the Snail shoes",
     "price": 9.99,
     "description": "\"Meow!\" Woah, oh my god did I just hear these shoes talk. Hahah, just kidding! It's Gary the Snail! Show your status as a Bobhead with these Gary shoes!",
@@ -70,7 +70,7 @@
     "quantity": 0
   },
   {
-    "id": 8,
+    "_id": 8,
     "title": "Geometric Shoes",
     "price": 10.99,
     "description": "Become a Geometrical Dominator with these colorful kicks! Give someone one look at these and they'll be driven to \"Stereo Madness\" (a level from the Geometry Dash game!).",
@@ -80,7 +80,7 @@
     "quantity": 0
   },
   {
-    "id": 9,
+    "_id": 9,
     "title": "Shrek Shoes",
     "price": 64,
     "description": "Hey now, I'm a believer in these stylish Shrek shoes! These shoes, in all their green glory, certainly won't make you an ogre! Donkey!",
@@ -90,7 +90,7 @@
     "quantity": 0
   },
   {
-    "id": 10,
+    "_id": 10,
     "title": "\"The Chompers\"",
     "price": 109,
     "description": "Nightmare Nightmare Nightmare Nightmare Nightmare Nightmare Nightmare Nightmare Nightmare Nightmare Nightmare Nightmare",
@@ -100,7 +100,7 @@
     "quantity": 0
   },
   {
-    "id": 11,
+    "_id": 11,
     "title": "Inflatable Shoes",
     "price": 109,
     "description": "Need to go for a swim? Well, you don't want to get your shoes soaked, silly! You NEED these inflatable kicks to get where you need to go, just the way a sea creature would! Surfs up, buddy!",
@@ -110,7 +110,7 @@
     "quantity": 0
   },
   {
-    "id": 12,
+    "_id": 12,
     "title": "Clown Shoes",
     "price": 114,
     "description": "Hey, circus in town? Nope, not at all. That statement is egregiously and erroneously wrong actually, and you should be embarassed for even thinking such a thing. I can understand your confusion though, as these are our comical clown shoes! You should buy these if you need some clowning in your life.",
