@@ -16,12 +16,12 @@ function LoginPage({handleSwitchToLogin, handleSwitchToRegister, handleLoginSubm
             <Form onSubmit={handleLoginSubmit}>
               <Form.Group controlId="formBasicEmail" className="mb-3">
                 <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" placeholder="Enter email" onChange={(e) => handleLogRegInputChange(e, formType)} />
+                <Form.Control type="email" name = "email" placeholder="Enter email" onChange={(e) => handleLogRegInputChange(e, formType)} />
               </Form.Group>
 
               <Form.Group controlId="formBasicPassword" className="mb-3">
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" onChange={(e) => handleLogRegInputChange(e, formType)}/>
+                <Form.Control type="password" name= "password" placeholder="Password" onChange={(e) => handleLogRegInputChange(e, formType)}/>
               </Form.Group>
 
               <Button variant="primary" type="submit">

@@ -25,7 +25,8 @@ function App() {
   const [registrationInfo, setRegistrationInfo] = useState({
     username: '',
     email: '',
-    password: ''
+    password: '',
+    confirmPassword: ''
   });
   
   const handleLogRegInputChange = (event, formType) => {
@@ -49,6 +50,8 @@ function App() {
 
   const handleRegistrationSubmit = (e) => {
     e.preventDefault();
+
+    console.log(e.target.value)
     if (registrationInfo.password !== registrationInfo.confirmPassword) {
       alert("Passwords do not match");
       return;
@@ -75,29 +78,32 @@ function App() {
         handleSwitchToLogin();
       });
 
-      setSwitchToLogin(true);
-      setSwitchToRegister(false);
-
       
   };
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
     const { email, password } = loginInfo;
-    console.log(email, password);
     fetch(`http://localhost:4000/findUser?email=${email}&password=${password}`)
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('User not found');
+        }
+        return response.json();
+      })
       .then((data) => {
         
         if (data) {
-          const value = Object.values(data);
-          alert(value);
+          setSwitchToLogin(false);
+          setSwitchToRegister(false);
         }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        alert('Invalid credentials');
       });
-
-      setSwitchToLogin(false);
-      setSwitchToRegister(false);
   }
+
   
 
 

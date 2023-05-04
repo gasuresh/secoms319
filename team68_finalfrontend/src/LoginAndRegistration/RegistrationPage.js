@@ -14,22 +14,22 @@ function RegistrationPage({handleSwitchToLogin, handleSwitchToRegister, handleRe
                         <Form onSubmit={handleRegistrationSubmit}>
                             <Form.Group controlId="formBasicName" className="mb-3">
                                 <Form.Label>Username</Form.Label>
-                                <Form.Control type="text" placeholder="Enter your username" onChange={(e) => handleLogRegInputChange(e, formType)}/>
+                                <Form.Control type="text" name = "username" placeholder="Enter your username" onChange={(e) => handleLogRegInputChange(e, formType)}/>
                             </Form.Group>
 
                             <Form.Group controlId="formBasicEmail" className="mb-3">
                                 <Form.Label>Email address</Form.Label>
-                                <Form.Control type="email" placeholder="Enter your email" onChange={(e) => handleLogRegInputChange(e, formType)} />
+                                <Form.Control type="email" name = "email" placeholder="Enter your email" onChange={(e) => handleLogRegInputChange(e, formType)} />
                             </Form.Group>
 
                             <Form.Group controlId="formBasicPassword" className="mb-3">
                                 <Form.Label>Password</Form.Label>
-                                <Form.Control type="password" placeholder="Create a password" onChange={(e) => handleLogRegInputChange(e, formType)} />
+                                <Form.Control type="password" name = "password" placeholder="Create a password" onChange={(e) => handleLogRegInputChange(e, formType)} />
                             </Form.Group>
 
                             <Form.Group controlId="formBasicConfirmPassword" className="mb-3">
                                 <Form.Label>Confirm Password</Form.Label>
-                                <Form.Control type="password" placeholder="Confirm your password" onChange={(e) => handleLogRegInputChange(e, formType)} />
+                                <Form.Control type="password" name = "confirmPassword" placeholder="Confirm your password" onChange={(e) => handleLogRegInputChange(e, formType)} />
                             </Form.Group>
 
                             <div className="d-flex justify-content-between">

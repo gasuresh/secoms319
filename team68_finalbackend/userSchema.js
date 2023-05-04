@@ -21,10 +21,12 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    createdAt: {
-        type: Date,
-        default: Date.now
+
+    admin: {
+        type: Boolean,
+        default: false
     }
+
 })
 
 const User = mongoose.model('User', UserSchema)
