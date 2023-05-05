@@ -1,4 +1,3 @@
-
 import ProductsList from './ListView/ProductsList';
 import SearchAndCheckout from './ListView/SearchAndCheckout';
 import React, { useState, useEffect} from 'react';
@@ -13,9 +12,6 @@ import RegistrationPage from './LoginAndRegistration/RegistrationPage';
 
 
 function App() {
-  
-
-
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const [cartTotal, setCartTotal] = useState(0);
@@ -38,17 +34,15 @@ function App() {
 
   
   useEffect(() => {
-  fetch("http://localhost:4000/")
+  fetch("http://localhost:4000/product")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setProducts(data);
       });
   }, []);
 
 
   
-  console.log(products);
 
   useEffect(() => {
     setCart(products.filter((product) => product.quantity > 0));
@@ -124,10 +118,9 @@ function App() {
       state: "",
       zip: "",
     })
-    fetch("http://localhost:4000/")
+    fetch("http://localhost:4000/product")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setProducts(data);
       });
   };
@@ -168,8 +161,6 @@ function App() {
 
   const handleRegistrationSubmit = (e) => {
     e.preventDefault();
-
-    console.log(e.target.value)
     if (registrationInfo.password !== registrationInfo.confirmPassword) {
       alert("Passwords do not match");
       return;
@@ -182,7 +173,7 @@ function App() {
       username: registrationInfo.username,
     };
 
-    console.log(newUser);
+    
   
     fetch("http://localhost:4000/registerUser", {
       method: "POST",
