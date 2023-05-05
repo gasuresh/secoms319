@@ -44,6 +44,7 @@ function App() {
 
 
 
+
   useEffect(() => {
     setCart(products.filter((product) => product.quantity > 0));
   }, [products]);
@@ -75,8 +76,28 @@ function App() {
 
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
-  const handleFormSubmission = () => {
+  const handleFormSubmission = (e) => {
+    e.preventDefault();
     setIsFormSubmitted(true);
+    try {
+      const order = {cart, formData};
+      console.log(order);
+      
+    fetch("http://localhost:4000/orders", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(order),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Order completed");
+        alert("Order created successfully!");
+      });
+    } catch (error) {
+      console.error(error);
+    }
+
+    
   };
 
 
@@ -282,6 +303,7 @@ function App() {
           handleCheckout={handleCheckout}
           hidden={switchToLogin || switchToRegister}
         />
+
       </div>
       <div hidden={!checkoutPressed || isFormSubmitted} style={{ backgroundImage: 'linear-gradient(to bottom, #e6e6fa, #4b0082)' }}>
         <BackToProducts handleBackButtonClick={handleBackButtonClick} hidden={switchToLogin || switchToRegister} />
@@ -293,6 +315,7 @@ function App() {
         <ConfirmationView cart={cart} cartTotal={cartTotal} cartTax={cartTax} formData={formData} hidden={switchToLogin || switchToRegister} />
         <NewBrowse handleConfirmButtonClick={handleConfirmButtonClick} hidden={switchToLogin || switchToRegister} />
       </div>
+
 
 
     </>

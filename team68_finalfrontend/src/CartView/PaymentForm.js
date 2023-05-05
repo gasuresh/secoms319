@@ -53,7 +53,7 @@ const PaymentForm = ({formData, handleFormSubmission, handleInputChange}) => {
     return (
       <Container className='bg-light mx-auto my-5'>
         <h1 className="display-6">Order Form</h1>
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleFormSubmission}>
         <Form.Group controlId="fullName">
           <Form.Label>Full Name</Form.Label>
           <Form.Control

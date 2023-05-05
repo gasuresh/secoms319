@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const Product = require("./prodSchema");
 const User = require("./userSchema");
+const Order = require("./orderSchema")
 
 
 const app = express();
@@ -142,6 +143,17 @@ app.post("/registerUser", async (req, res) => {
 });
 
 
+app.post('/orders', async (req, res) => {
+  try {
+    const order = new Order(req.body); // assuming you have a model called "Order"
+    console.log(order);
+    const savedOrder = await order.save();
+    res.status(201).json(savedOrder);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error creating order');
+  }
+});
 
-
+  
 
