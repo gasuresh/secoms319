@@ -1,8 +1,8 @@
 import { Navbar, FormControl, Button} from 'react-bootstrap';
 
-const SearchAndCheckout = ({ searchTerm, handleSearch, handleCheckout }) => {
+const SearchAndCheckout = ({ searchTerm, handleSearch, handleCheckout}) => {
     return (
-      <Navbar bg="light" expand="lg">
+      <Navbar bg="light" expand="lg" >
         <div className="d-flex w-100 align-items-center justify-content-between">
           <div className="d-flex">
             <FormControl

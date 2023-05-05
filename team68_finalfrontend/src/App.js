@@ -238,37 +238,31 @@ function App() {
           handleLogRegInputChange={handleLogRegInputChange}
           hidden={!switchToRegister}
         />
-      {((!checkoutPressed && !backButtonClick) || (!checkoutPressed && backButtonClick) || (confirmButtonClick)) && (
-        <>
+        <div hidden = {(switchToLogin || switchToRegister) || (checkoutPressed && backButtonClick) || (!confirmButtonClick && !backButtonClick && checkoutPressed)}>
           <SearchAndCheckout
-          
             searchTerm={searchTerm}
             handleSearch={handleSearch}
             handleCheckout={handleCheckout}
+
           />
           <ProductsList
             searchTerm={searchTerm}
             products={products}
             handleQuantityChange={handleQuantityChange}
             handleCheckout={handleCheckout}
+            hidden = {switchToLogin || switchToRegister}
           />
-        </>
-      )}
-      {checkoutPressed && !isFormSubmitted && (
-        <>
-          <BackToProducts handleBackButtonClick={handleBackButtonClick}/>
+        </div>
+        <div hidden = {!checkoutPressed || isFormSubmitted}>
+          <BackToProducts handleBackButtonClick={handleBackButtonClick} hidden = {switchToLogin || switchToRegister}/>
           <Cart cart={cart} cartTotal={cartTotal} setCartTotal={setCartTotal} cartTax={cartTax} setCartTax={setCartTax} />
-          <PaymentForm handleFormSubmission={handleFormSubmission} handleInputChange = {handleInputChange} formData={formData} />
-        </>
-      )}
-      {isFormSubmitted && (
-        <>
-        cart, cartTotal, cartTax, formData
-          <ConfirmationView cart={cart} cartTotal={cartTotal} cartTax={cartTax} formData={formData} />
-          <NewBrowse handleConfirmButtonClick={handleConfirmButtonClick} />
-        </>
-
-      )}
+          <PaymentForm handleFormSubmission={handleFormSubmission} handleInputChange = {handleInputChange} formData={formData} hidden = {switchToLogin || switchToRegister}/>
+        </div>
+      
+        <div hidden = {!isFormSubmitted}>
+          <ConfirmationView cart={cart} cartTotal={cartTotal} cartTax={cartTax} formData={formData} hidden = {switchToLogin || switchToRegister} />
+          <NewBrowse handleConfirmButtonClick={handleConfirmButtonClick} hidden = {switchToLogin || switchToRegister}/>
+        </div>
 
 
     </>
