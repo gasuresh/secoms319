@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const Product = require("./prodSchema");
 const User = require("./userSchema");
+const Order = require("./orderSchema")
 
 
 const app = express();

@@ -83,6 +83,22 @@ function App() {
 
   const handleFormSubmission = () => {
     setIsFormSubmitted(true);
+    const order = {cart, formData};
+    fetch("http://localhost:4000/insert", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Post a new product completed");
+        console.log(data);
+        if (data) {
+          //const keys = Object.keys(data);
+          const value = Object.values(data);
+          alert(value);
+        }
+      });
   };
 
 
