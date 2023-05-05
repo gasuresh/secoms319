@@ -7,6 +7,7 @@ const productSchema = new mongoose.Schema({
   description: String,
   category: String,
   image: String,
+  quantity: Number,
 });
 
 const formSchema = new mongoose.Schema({
