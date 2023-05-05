@@ -7,10 +7,6 @@ const productSchema = new mongoose.Schema({
   description: String,
   category: String,
   image: String,
-  rating: {
-    rate: Number,
-    count: Number,
-  },
 });
 
 const formSchema = new mongoose.Schema({
