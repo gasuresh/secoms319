@@ -27,7 +27,9 @@ const UserSchema = new mongoose.Schema({
         default: false
     }
 
-})
+},
+    {collection: "users"}
+)
 
 const User = mongoose.model('User', UserSchema)
 
