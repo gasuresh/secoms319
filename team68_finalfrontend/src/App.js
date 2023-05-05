@@ -80,7 +80,7 @@ function App() {
     e.preventDefault();
     setIsFormSubmitted(true);
     try {
-      const order = {cart, formData};
+      const order = {cart, formData, currUser};
       console.log(order);
       
     fetch("http://localhost:4000/orders", {
