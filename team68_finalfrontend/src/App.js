@@ -1,7 +1,6 @@
-
 import ProductsList from './ListView/ProductsList';
 import SearchAndCheckout from './ListView/SearchAndCheckout';
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import ProductData from './product_data.json';
 import BackToProducts from './CartView/BackToProducts';
 import PaymentForm from './CartView/PaymentForm';
@@ -13,9 +12,6 @@ import RegistrationPage from './LoginAndRegistration/RegistrationPage';
 
 
 function App() {
-  
-
-
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const [cartTotal, setCartTotal] = useState(0);
@@ -24,7 +20,7 @@ function App() {
     email: '',
     password: ''
   });
-  
+
   const [registrationInfo, setRegistrationInfo] = useState({
     username: '',
     email: '',
@@ -34,11 +30,11 @@ function App() {
   const [switchToLogin, setSwitchToLogin] = useState(true);
   const [switchToRegister, setSwitchToRegister] = useState(false);
 
-  const [currUser, setCurrUser] = useState(null);
+  const [currUser, setCurrUser] = useState([]);
 
-  
+
   useEffect(() => {
-  fetch("http://localhost:4000/")
+    fetch("http://localhost:4000/product")
       .then((response) => response.json())
       .then((data) => {
         setProducts(data);
@@ -46,7 +42,7 @@ function App() {
   }, []);
 
 
-  
+
 
 
   useEffect(() => {
@@ -71,7 +67,7 @@ function App() {
   };
 
   const [backButtonClick, setBackButtonClick] = useState(false)
-  const handleBackButtonClick  = () => {
+  const handleBackButtonClick = () => {
     setCheckoutPressed(false);
     setBackButtonClick(true);
     setSearchTerm("");
@@ -124,9 +120,9 @@ function App() {
     }));
   };
 
-  
+
   const [confirmButtonClick, setConfirmButtonClick] = useState(false);
-  
+
   const handleConfirmButtonClick = () => {
     setCart([]);
     setConfirmButtonClick(true);
@@ -143,16 +139,15 @@ function App() {
       state: "",
       zip: "",
     })
-    fetch("http://localhost:4000/")
+    fetch("http://localhost:4000/product")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setProducts(data);
       });
   };
 
 
-  
+
 
   const handleSwitchToLogin = () => {
     setSwitchToLogin(true);
@@ -164,13 +159,13 @@ function App() {
     setSwitchToRegister(true);
   };
 
-  
-  
+
+
   const handleLogRegInputChange = (event, formType) => {
     const target = event.target;
     const value = target.value;
     const name = target.name;
-  
+
     if (formType === "login") {
       setLoginInfo(prevState => ({
         ...prevState,
@@ -183,17 +178,15 @@ function App() {
       }));
     }
   };
-  
+
 
   const handleRegistrationSubmit = (e) => {
     e.preventDefault();
-
-    console.log(e.target.value)
     if (registrationInfo.password !== registrationInfo.confirmPassword) {
       alert("Passwords do not match");
       return;
     }
-  
+
 
     const newUser = {
       email: registrationInfo.email,
@@ -201,8 +194,8 @@ function App() {
       username: registrationInfo.username,
     };
 
-    console.log(newUser);
-  
+
+
     fetch("http://localhost:4000/registerUser", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -215,7 +208,7 @@ function App() {
         handleSwitchToLogin();
       });
 
-      
+
   };
 
   const handleLoginSubmit = (e) => {
@@ -229,11 +222,12 @@ function App() {
         return response.json();
       })
       .then((data) => {
-        
+
         if (data) {
           setSwitchToLogin(false);
           setSwitchToRegister(false);
           setCurrUser(data);
+          
         }
       })
       .catch((error) => {
@@ -242,66 +236,91 @@ function App() {
       });
   }
 
-  
-  
+  useEffect(() =>
+  {
+    console.log(currUser)
+  },[currUser]);
 
-  
-  
+  const [createButton, setCreateButton] = useState(true);
+  const handleCreateButton = () => {
+    setCreateButton(true);
+    setUpdateButton(false);
+    setDeleteButton(false);
+
+  };
+
+  const [updateButton, setUpdateButton] = useState(false);
+  const handleUpdateButton = () => {
+    setCreateButton(false);
+    setUpdateButton(true);
+    setDeleteButton(false);
+
+  };
+
+  const [deleteButton, setDeleteButton] = useState(false);
+  const handleDeleteButton = () => {
+    setCreateButton(false);
+    setUpdateButton(false);
+    setDeleteButton(true);
+
+  };
+
+
+
+
+
+
 
   return (
     <>
 
-        <LoginPage
-          handleSwitchToLogin={handleSwitchToLogin}
-          handleSwitchToRegister={handleSwitchToRegister}
-          handleLoginSubmit={handleLoginSubmit}
-          handleLogRegInputChange={handleLogRegInputChange}
-          hidden={!switchToLogin}
-        />
-    
-        <RegistrationPage
-          handleSwitchToLogin={handleSwitchToLogin}
-          handleSwitchToRegister={handleSwitchToRegister}
-          handleRegistrationSubmit={handleRegistrationSubmit}
-          handleLogRegInputChange={handleLogRegInputChange}
-          hidden={!switchToRegister}
-        />
-      {((!checkoutPressed && !backButtonClick) || (!checkoutPressed && backButtonClick) || (confirmButtonClick)) && (
-        <>
-          <SearchAndCheckout
-          
-            searchTerm={searchTerm}
-            handleSearch={handleSearch}
-            handleCheckout={handleCheckout}
-          />
-          <ProductsList
-            searchTerm={searchTerm}
-            products={products}
-            handleQuantityChange={handleQuantityChange}
-            handleCheckout={handleCheckout}
-          />
-        </>
-      )}
-      {checkoutPressed && !isFormSubmitted && (
-        <>
-          <BackToProducts handleBackButtonClick={handleBackButtonClick}/>
-          <Cart cart={cart} cartTotal={cartTotal} setCartTotal={setCartTotal} cartTax={cartTax} setCartTax={setCartTax} />
-          <PaymentForm handleFormSubmission={handleFormSubmission} handleInputChange = {handleInputChange} formData={formData} />
-        </>
-      )}
-      {isFormSubmitted && (
-        <>
-      
-          <ConfirmationView cart={cart} cartTotal={cartTotal} cartTax={cartTax} formData={formData} />
-          <NewBrowse handleConfirmButtonClick={handleConfirmButtonClick} />
-        </>
+      <LoginPage
+        handleSwitchToLogin={handleSwitchToLogin}
+        handleSwitchToRegister={handleSwitchToRegister}
+        handleLoginSubmit={handleLoginSubmit}
+        handleLogRegInputChange={handleLogRegInputChange}
+        hidden={!switchToLogin}
+      />
 
-      )}
+      <RegistrationPage
+        handleSwitchToLogin={handleSwitchToLogin}
+        handleSwitchToRegister={handleSwitchToRegister}
+        handleRegistrationSubmit={handleRegistrationSubmit}
+        handleLogRegInputChange={handleLogRegInputChange}
+        hidden={!switchToRegister}
+      />
+      <div hidden={(switchToLogin || switchToRegister) || (checkoutPressed && backButtonClick) || (!confirmButtonClick && !backButtonClick && checkoutPressed)}>
+        <SearchAndCheckout
+          searchTerm={searchTerm}
+          handleSearch={handleSearch}
+          handleCheckout={handleCheckout}
+
+        />
+        <ProductsList
+          searchTerm={searchTerm}
+          products={products}
+          handleQuantityChange={handleQuantityChange}
+          handleCheckout={handleCheckout}
+          hidden={switchToLogin || switchToRegister}
+        />
+
+      </div>
+      <div hidden={!checkoutPressed || isFormSubmitted} style={{ backgroundImage: 'linear-gradient(to bottom, #e6e6fa, #4b0082)' }}>
+        <BackToProducts handleBackButtonClick={handleBackButtonClick} hidden={switchToLogin || switchToRegister} />
+        <Cart cart={cart} cartTotal={cartTotal} setCartTotal={setCartTotal} cartTax={cartTax} setCartTax={setCartTax} />
+        <PaymentForm handleFormSubmission={handleFormSubmission} handleInputChange={handleInputChange} formData={formData} hidden={switchToLogin || switchToRegister} />
+      </div>
+
+      <div hidden={!isFormSubmitted}>
+        <ConfirmationView cart={cart} cartTotal={cartTotal} cartTax={cartTax} formData={formData} hidden={switchToLogin || switchToRegister} />
+        <NewBrowse handleConfirmButtonClick={handleConfirmButtonClick} hidden={switchToLogin || switchToRegister} />
+      </div>
+
 
 
     </>
   );
-  
+
 }
 
 
