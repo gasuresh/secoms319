@@ -1,7 +1,7 @@
 import { Container } from 'react-bootstrap';
 import Product from './Product';
 
-const ProductsList = ({ searchTerm, products, handleQuantityChange}) => {
+const ProductsList = ({ searchTerm, products, handleQuantityChange }) => {
   // Filter products based on search term
   const filteredProducts = searchTerm
     ? products.filter((product) =>
@@ -15,11 +15,10 @@ const ProductsList = ({ searchTerm, products, handleQuantityChange}) => {
 
   else {
     return (
-      <div className='bg-secondary bg-gradient bg-opacity-50'>
-
+      <div style={{backgroundImage: 'linear-gradient(to bottom, #e6e6fa, #4b0082)'}}>
         <Container>
           <h1 className="display-1 text-center">Silly Store</h1>
-          <div className="row">
+          <div className="row row-cols-4">
             {filteredProducts.map((product) => (
               <div className="col" key={product._id}>
                 <Product product={product} onQuantityChange={handleQuantityChange} />
@@ -27,7 +26,6 @@ const ProductsList = ({ searchTerm, products, handleQuantityChange}) => {
             ))}
           </div>
         </Container>
-
       </div>
 
     );

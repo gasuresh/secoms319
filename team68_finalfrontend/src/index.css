@@ -29,3 +29,15 @@ code {
 .fade-exit-active {
   opacity: 0;
 }
+
+.product-card {
+  background-image: linear-gradient(to bottom, #191f5a, #397c7b);
+}
+
+.product-card .product-buttons .add-button {
+  background-image: linear-gradient(to bottom, #1829a9, #091993);
+}
+
+.product-card .product-buttons .remove-button {
+  background-image: linear-gradient(to bottom, #f00, #800);
+}
