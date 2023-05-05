@@ -41,14 +41,13 @@ function App() {
   fetch("http://localhost:4000/")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setProducts(data);
       });
   }, []);
 
 
   
-  console.log(products);
+
 
   useEffect(() => {
     setCart(products.filter((product) => product.quantity > 0));
@@ -81,24 +80,28 @@ function App() {
 
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
-  const handleFormSubmission = () => {
+  const handleFormSubmission = (e) => {
+    e.preventDefault();
     setIsFormSubmitted(true);
-    const order = {cart, formData};
-    fetch("http://localhost:4000/insert", {
+    try {
+      const order = {cart, formData};
+      console.log(order);
+      
+    fetch("http://localhost:4000/orders", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(order),
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Post a new product completed");
-        console.log(data);
-        if (data) {
-          //const keys = Object.keys(data);
-          const value = Object.values(data);
-          alert(value);
-        }
+        console.log("Order completed");
+        alert("Order created successfully!");
       });
+    } catch (error) {
+      console.error(error);
+    }
+
+    
   };
 
 
@@ -288,7 +291,7 @@ function App() {
       )}
       {isFormSubmitted && (
         <>
-        cart, cartTotal, cartTax, formData
+      
           <ConfirmationView cart={cart} cartTotal={cartTotal} cartTax={cartTax} formData={formData} />
           <NewBrowse handleConfirmButtonClick={handleConfirmButtonClick} />
         </>

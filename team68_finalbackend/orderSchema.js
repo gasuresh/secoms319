@@ -13,7 +13,7 @@ const productSchema = new mongoose.Schema({
   },
 });
 
-const userSchema = new mongoose.Schema({
+const formSchema = new mongoose.Schema({
   fullName: String,
   email: String,
   creditCard: String,
@@ -25,9 +25,12 @@ const userSchema = new mongoose.Schema({
 });
 
 const orderSchema = new mongoose.Schema({
-  products: [productSchema],
-  user: userSchema,
-});
+  cart: [productSchema],
+  formData: formSchema,
+
+},
+    { collection: "orders" }
+);
 
 const Order = mongoose.model('Order', orderSchema);
 module.exports = Order;
