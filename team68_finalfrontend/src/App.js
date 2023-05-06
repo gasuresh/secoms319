@@ -10,6 +10,10 @@ import NewBrowse from './ConfView/NewBrowse';
 import LoginPage from './LoginAndRegistration/LoginPage';
 import RegistrationPage from './LoginAndRegistration/RegistrationPage';
 import OrderHistory from './OrderHistory';
+import CRUDOptions from './AdminView/CRUDOptions';
+import ProductForm from './AdminView/ProductForm';
+
+
 
 
 function App() {
@@ -121,6 +125,14 @@ function App() {
     }));
   };
 
+  const handleViewProducts = () => {
+    fetch("http://localhost:4000/product")
+      .then((response) => response.json())
+      .then((data) => {
+        setProducts(data);
+      });
+  }
+
 
   const [confirmButtonClick, setConfirmButtonClick] = useState(false);
 
@@ -228,7 +240,7 @@ function App() {
           setSwitchToLogin(false);
           setSwitchToRegister(false);
           setCurrUser(data);
-          
+
         }
       })
       .catch((error) => {
@@ -237,10 +249,7 @@ function App() {
       });
   }
 
-  useEffect(() =>
-  {
-    console.log(currUser)
-  },[currUser]);
+
 
   const [createButton, setCreateButton] = useState(true);
   const handleCreateButton = () => {
@@ -266,8 +275,12 @@ function App() {
 
   };
 
+  const [adminPressed, setAdminPressed] = useState(false);
 
+  const handleAdminButton = () => {
+    setAdminPressed(true)
 
+  }
 
 
 
@@ -290,23 +303,23 @@ function App() {
         handleLogRegInputChange={handleLogRegInputChange}
         hidden={!switchToRegister}
       />
-      <div hidden={(switchToLogin || switchToRegister) || (checkoutPressed && backButtonClick) || (!confirmButtonClick && !backButtonClick && checkoutPressed)}>
+      <div hidden={(switchToLogin || switchToRegister) || (checkoutPressed && backButtonClick) || (!confirmButtonClick && !backButtonClick && checkoutPressed) || adminPressed}>
         <SearchAndCheckout
           searchTerm={searchTerm}
           handleSearch={handleSearch}
           handleCheckout={handleCheckout}
-
+          handleAdminButton={handleAdminButton}
+          isAdmin={currUser.admin}
         />
         <ProductsList
           searchTerm={searchTerm}
           products={products}
           handleQuantityChange={handleQuantityChange}
           handleCheckout={handleCheckout}
-          hidden={switchToLogin || switchToRegister}
         />
 
       </div>
-      <div hidden={!checkoutPressed || isFormSubmitted} style={{ backgroundImage: 'linear-gradient(to bottom, #e6e6fa, #4b0082)' }}>
+      <div hidden={!checkoutPressed || isFormSubmitted} style={{ backgroundImage: 'linear-gradient(to bottom, #e6e6fa, #4b0082)', minHeight: '125vh'}}>
         <BackToProducts handleBackButtonClick={handleBackButtonClick} hidden={switchToLogin || switchToRegister} />
         <Cart cart={cart} cartTotal={cartTotal} setCartTotal={setCartTotal} cartTax={cartTax} setCartTax={setCartTax} />
         <PaymentForm handleFormSubmission={handleFormSubmission} handleInputChange={handleInputChange} formData={formData} hidden={switchToLogin || switchToRegister} />
@@ -316,6 +329,23 @@ function App() {
         <ConfirmationView cart={cart} cartTotal={cartTotal} cartTax={cartTax} formData={formData} hidden={switchToLogin || switchToRegister} />
         <NewBrowse handleConfirmButtonClick={handleConfirmButtonClick} hidden={switchToLogin || switchToRegister} />
         <OrderHistory currUser={currUser} />
+      </div>
+
+      <div hidden={!adminPressed} style={{ backgroundImage: 'linear-gradient(to bottom, #e6e6fa, #4b0082)', minHeight: '125vh'}}>
+        <nav className="navbar navbar-expand-lg navbar-light">
+          <div className="container-fluid">
+            <h2 className="mt-1 me-auto ps-3">Admin View</h2>
+            <button className="btn btn-success me-3" onClick={() => {setAdminPressed(false); handleViewProducts();}}>
+              View Products
+            </button>
+          </div>
+        </nav>
+        <CRUDOptions 
+          handleCreateButton={handleCreateButton}
+          handleUpdateButton={handleUpdateButton} 
+          handleDeleteButton={handleDeleteButton} 
+        />
+        <ProductForm createButton={createButton} deleteButton={deleteButton} updateButton = {updateButton} />
       </div>
 
 

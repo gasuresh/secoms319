@@ -42,6 +42,7 @@ app.post("/insert", async (req, res) => {
     const pimage = req.body.image;
     const prate = req.body.rating.rate;
     const pcount = req.body.rating.count;
+    const pquantity = req.body.rating.quantity;
 
     const formData = new Product({
         _id: p_id,
@@ -50,6 +51,7 @@ app.post("/insert", async (req, res) => {
         description: pdescription,
         category: pcategory,
         image: pimage,
+        quantity: pquantity,
         rating: { rate: prate, count: pcount },
     });
 
