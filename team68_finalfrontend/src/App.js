@@ -317,7 +317,7 @@ function App() {
         />
 
       </div>
-      <div hidden={!checkoutPressed || isFormSubmitted} style={{ backgroundImage: 'linear-gradient(to bottom, #e6e6fa, #4b0082)' }}>
+      <div hidden={!checkoutPressed || isFormSubmitted} style={{ backgroundImage: 'linear-gradient(to bottom, #e6e6fa, #4b0082)', minHeight: '125vh'}}>
         <BackToProducts handleBackButtonClick={handleBackButtonClick} hidden={switchToLogin || switchToRegister} />
         <Cart cart={cart} cartTotal={cartTotal} setCartTotal={setCartTotal} cartTax={cartTax} setCartTax={setCartTax} />
         <PaymentForm handleFormSubmission={handleFormSubmission} handleInputChange={handleInputChange} formData={formData} hidden={switchToLogin || switchToRegister} />
