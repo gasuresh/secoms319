@@ -37,21 +37,28 @@ app.get("/product/:id", async (req, resp) => {
   const id = req.params.id;
   const query = { _id: id };
   const oneProduct = await Product.findOne(query);
-  console.log(oneProduct);
+
+  oneProduct.image = oneProduct.image.split('/').pop().split('.').slice(0, -1).join('.');
+
   resp.send(oneProduct);
 });
 
 
-app.post("/insert", async (req, res) => {
+const getNextProductId = async () => {
+  const product = await Product.findOne().sort({ _id: -1 }).limit(1);
+  return product ? product._id + 1 : 1;
+};
+
+
+app.post("/product/insert", async (req, res) => {
   console.log(req.body);
-  const p_id = req.body._id;
+  const p_id = await getNextProductId();
   const ptitle = req.body.title;
   const pprice = req.body.price;
   const pdescription = req.body.description;
   const pcategory = req.body.category;
   const pimage = req.body.image;
-  const prate = req.body.rating.rate;
-  const pcount = req.body.rating.count;
+  const pquantity = req.body.quantity;
 
   const formData = new Product({
     _id: p_id,
@@ -60,7 +67,7 @@ app.post("/insert", async (req, res) => {
     description: pdescription,
     category: pcategory,
     image: pimage,
-    rating: { rate: prate, count: pcount },
+    quantity: pquantity,
   });
 
   try {
@@ -75,7 +82,7 @@ app.post("/insert", async (req, res) => {
 });
 
 
-app.put("/update/:id", async (req, res) => {
+app.put("/product/update/:id", async (req, res) => {
   try {
     const productId = req.params.id;
     const update = req.body;
@@ -96,7 +103,7 @@ app.put("/update/:id", async (req, res) => {
 });
 
 
-app.delete("/delete", async (req, res) => {
+app.delete("/product/delete", async (req, res) => {
   console.log("Delete :", req.body);
   try {
     const query = { _id: req.body._id };
@@ -108,6 +115,20 @@ app.delete("/delete", async (req, res) => {
   } catch (err) {
     console.log("Error while deleting :" + p_id + " " + err);
   }
+});
+
+app.get("/images", (req, res) => {
+  const fs = require("fs");
+  const path = "./images";
+  fs.readdir(path, (err, files) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send("Error reading directory");
+    } else {
+      const imageNames = files.filter((file) => file.endsWith(".jpg")).map((file) => file.replace(/\.jpg$/, ""));
+      res.send(imageNames);
+    }
+  });
 });
 
 app.get("/findUser", async (req, res) => {
