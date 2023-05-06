@@ -29,7 +29,7 @@ app.listen(port, () => {
 app.get("/product", async (req, resp) => {
   const query = {};
   const allProducts = await Product.find(query);
-  console.log(allProducts);
+  //console.log(allProducts);
   resp.send(allProducts);
 });
 
@@ -37,7 +37,7 @@ app.get("/product/:id", async (req, resp) => {
   const id = req.params.id;
   const query = { _id: id };
   const oneProduct = await Product.findOne(query);
-  console.log(oneProduct);
+  //console.log(oneProduct);
   resp.send(oneProduct);
 });
 
@@ -146,7 +146,7 @@ app.post("/registerUser", async (req, res) => {
 app.post('/orders', async (req, res) => {
   try {
     const order = new Order(req.body); 
-    console.log(order);
+    //console.log(order);
     const savedOrder = await order.save();
     res.status(201).json(savedOrder);
   } catch (error) {
@@ -155,16 +155,17 @@ app.post('/orders', async (req, res) => {
   }
 });
 
-app.get("/history", async (req, res) => {
-  const { userId } = req.query;
+app.get("/history/:userId", async (req, res) => {
   try {
+    const userId = req.params.userId;
+    console.log(userId);
     const orders = await Order.find({ "currUser._id": userId });
-    res.json(orders);
+    console.log(orders);
+    res.send(orders);
   } catch (error) {
-    console.error("Error fetching orders:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error(error);
+    res.status(500).send('Error retrieving order history');
   }
 });
-
   
 

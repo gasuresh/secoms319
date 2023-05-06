@@ -2,18 +2,42 @@ import React, { useState, useEffect } from "react";
 
 function OrderHistory({ currUser }) {
   const [orders, setOrders] = useState([]);
+/*
   useEffect(() => {
-    // Fetch orders from MongoDB database using the current user's ID
-    const fetchOrders = async () => {
-      try {
-        const response = await fetch(`/history?userId=${currUser._id}`);
-        const data = await response.json();
+    fetch(`http://localhost:4000/orders/${currUser._id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
         setOrders(data);
-      } catch (error) {
-        console.error("Error fetching orders:", error);
-      }
-    };
-    fetchOrders();
+      })
+      .catch((error) => {
+        console.error("Error fetching order history:", error);
+      });
+  }, [currUser._id]);*/
+
+  useEffect(() => {
+    fetch(`http://localhost:4000/history/${currUser._id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        console.log(response);
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setOrders(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching order history:", error);
+      });
   }, [currUser._id]);
 
   return (
