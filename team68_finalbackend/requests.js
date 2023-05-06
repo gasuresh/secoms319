@@ -29,7 +29,7 @@ app.listen(port, () => {
 app.get("/product", async (req, resp) => {
   const query = {};
   const allProducts = await Product.find(query);
-  console.log(allProducts);
+  //console.log(allProducts);
   resp.send(allProducts);
 });
 
@@ -39,7 +39,6 @@ app.get("/product/:id", async (req, resp) => {
   const oneProduct = await Product.findOne(query);
 
   oneProduct.image = oneProduct.image.split('/').pop().split('.').slice(0, -1).join('.');
-
   resp.send(oneProduct);
 });
 
@@ -166,8 +165,8 @@ app.post("/registerUser", async (req, res) => {
 
 app.post('/orders', async (req, res) => {
   try {
-    const order = new Order(req.body); // assuming you have a model called "Order"
-    console.log(order);
+    const order = new Order(req.body); 
+    //console.log(order);
     const savedOrder = await order.save();
     res.status(201).json(savedOrder);
   } catch (error) {
@@ -176,5 +175,17 @@ app.post('/orders', async (req, res) => {
   }
 });
 
+app.get("/history/:userId", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    console.log(userId);
+    const orders = await Order.find({ "currUser._id": userId });
+    console.log(orders);
+    res.send(orders);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error retrieving order history');
+  }
+});
   
 

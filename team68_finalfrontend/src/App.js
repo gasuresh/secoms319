@@ -9,8 +9,10 @@ import ConfirmationView from './ConfView/ConfirmationView';
 import NewBrowse from './ConfView/NewBrowse';
 import LoginPage from './LoginAndRegistration/LoginPage';
 import RegistrationPage from './LoginAndRegistration/RegistrationPage';
+import OrderHistory from './OrderHistory';
 import CRUDOptions from './AdminView/CRUDOptions';
 import ProductForm from './AdminView/ProductForm';
+
 
 
 
@@ -83,7 +85,7 @@ function App() {
     e.preventDefault();
     setIsFormSubmitted(true);
     try {
-      const order = {cart, formData};
+      const order = {cart, formData, currUser};
       console.log(order);
       
     fetch("http://localhost:4000/orders", {
@@ -326,6 +328,7 @@ function App() {
       <div hidden={!isFormSubmitted}>
         <ConfirmationView cart={cart} cartTotal={cartTotal} cartTax={cartTax} formData={formData} hidden={switchToLogin || switchToRegister} />
         <NewBrowse handleConfirmButtonClick={handleConfirmButtonClick} hidden={switchToLogin || switchToRegister} />
+        <OrderHistory currUser={currUser} />
       </div>
 
       <div hidden={!adminPressed} style={{ backgroundImage: 'linear-gradient(to bottom, #e6e6fa, #4b0082)', minHeight: '125vh'}}>

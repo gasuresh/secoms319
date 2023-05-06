@@ -7,10 +7,7 @@ const productSchema = new mongoose.Schema({
   description: String,
   category: String,
   image: String,
-  rating: {
-    rate: Number,
-    count: Number,
-  },
+  quantity: Number,
 });
 
 const formSchema = new mongoose.Schema({
@@ -24,10 +21,36 @@ const formSchema = new mongoose.Schema({
   zip: String,
 });
 
+const UserSchema = new mongoose.Schema({
+    _id: {
+        type: String,
+        required: true,
+    },
+
+    username: {
+        type: String,
+        required: true,
+    },
+    email: {
+        type: String,
+        required: true,
+    },
+    password: {
+        type: String,
+        required: true
+    },
+
+    admin: {
+        type: Boolean,
+        default: false
+    }
+
+});
+
 const orderSchema = new mongoose.Schema({
   cart: [productSchema],
   formData: formSchema,
-
+  currUser: UserSchema,
 },
     { collection: "orders" }
 );

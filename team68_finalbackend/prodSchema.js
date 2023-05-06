@@ -7,6 +7,7 @@ const ReactFormDataSchema = new mongoose.Schema({
     category: { type: String },
     image: { type: String },
     quantity: {type : Number, default: 0},
+
 },
     { collection: "products" }
 )
