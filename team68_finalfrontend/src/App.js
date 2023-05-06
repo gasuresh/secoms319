@@ -12,8 +12,9 @@ import OrderHistory from './OrderHistory';
 import CRUDOptions from './AdminView/CRUDOptions';
 import ProductForm from './AdminView/ProductForm';
 import CheckoutOptions from './CartView/CheckoutOptions';
+import { Container, Row, Col, Modal} from 'react-bootstrap';
 
-import { Modal } from 'react-bootstrap';
+
 
 
 
@@ -283,6 +284,13 @@ function App() {
 
   }
 
+  const [aboutPressed, setAboutPressed] = useState(false);
+
+  const handleAboutButton = () => {
+    setAboutPressed(true)
+
+  }
+
 
   const handleViewOrdersModal = () => {
     setShowModal(true)
@@ -294,7 +302,42 @@ function App() {
     setSwitchToLogin(true)
     setCurrUser([])
   }
-
+  
+  const AboutUs = () => {
+    return (
+      <Container>
+        <Row>
+          <Col>
+            <h2>Student Information</h2>
+            <p>
+              <strong>Will Ernatt</strong>
+              <br />
+              Email: wernatt@iastate.edu
+            </p>
+            <p>
+              <strong>Gautham Suresh</strong>
+              <br />
+              Email: gsuresh1@iastate.edu
+            </p>
+            <hr />
+            <h2>Course Information</h2>
+            <p>
+              Course Number: SE/ComS 319
+              <br />
+              Course Name: Construction of User Interfaces
+              <br />
+              Date: May 2023
+              <br />
+              Professor Name: Dr. Abraham N. Aldaco Gastelum
+              <br />
+              Professor Email: aaldaco@iastate.edu
+            </p>
+          </Col>
+        </Row>
+      </Container>
+    );
+  };
+  
 
 
   return (
@@ -320,6 +363,7 @@ function App() {
           handleSearch={handleSearch}
           handleCheckout={handleCheckout}
           handleAdminButton={handleAdminButton}
+          handleAboutButton={handleAboutButton}
           isAdmin={currUser.admin}
           handleViewOrdersModal={handleViewOrdersModal}
           handleLogout = {handleLogout}
@@ -337,6 +381,15 @@ function App() {
           </Modal.Header>
           <Modal.Body>
             <OrderHistory currUser={currUser} />
+          </Modal.Body>
+        </Modal>
+
+        <Modal show={aboutPressed} onHide={() => setAboutPressed(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>About Us</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <AboutUs />
           </Modal.Body>
         </Modal>
 
