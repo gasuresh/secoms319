@@ -34,7 +34,7 @@ app.get("/product", async (req, resp) => {
 
 app.get("/product/:id", async (req, resp) => {
   const id = req.params.id;
-  const query = { _id: id };co
+  const query = { _id: id };
   const oneProduct = await Product.findOne(query);
 
   oneProduct.image = oneProduct.image.split('/').pop().split('.').slice(0, -1).join('.');

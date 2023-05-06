@@ -65,7 +65,10 @@ const ProductForm = ({ createButton, deleteButton, updateButton }) => {
         fetch(`http://localhost:4000/product/update/${productFormData._id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(productFormData),
+            body: JSON.stringify({
+                ...productFormData,
+                image: "/images/" + productFormData.image + ".jpg",
+            }),
         })
             .then((response) => response.json())
             .then((data) => {
