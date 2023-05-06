@@ -9,6 +9,7 @@ import ConfirmationView from './ConfView/ConfirmationView';
 import NewBrowse from './ConfView/NewBrowse';
 import LoginPage from './LoginAndRegistration/LoginPage';
 import RegistrationPage from './LoginAndRegistration/RegistrationPage';
+import OrderHistory from './OrderHistory';
 
 
 function App() {
@@ -314,6 +315,7 @@ function App() {
       <div hidden={!isFormSubmitted}>
         <ConfirmationView cart={cart} cartTotal={cartTotal} cartTax={cartTax} formData={formData} hidden={switchToLogin || switchToRegister} />
         <NewBrowse handleConfirmButtonClick={handleConfirmButtonClick} hidden={switchToLogin || switchToRegister} />
+        <OrderHistory currUser={currUser} />
       </div>
 
 

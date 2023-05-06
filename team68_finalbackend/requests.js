@@ -145,13 +145,24 @@ app.post("/registerUser", async (req, res) => {
 
 app.post('/orders', async (req, res) => {
   try {
-    const order = new Order(req.body); // assuming you have a model called "Order"
+    const order = new Order(req.body); 
     console.log(order);
     const savedOrder = await order.save();
     res.status(201).json(savedOrder);
   } catch (error) {
     console.error(error);
     res.status(500).send('Error creating order');
+  }
+});
+
+app.get("/history", async (req, res) => {
+  const { userId } = req.query;
+  try {
+    const orders = await Order.find({ "currUser._id": userId });
+    res.json(orders);
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
