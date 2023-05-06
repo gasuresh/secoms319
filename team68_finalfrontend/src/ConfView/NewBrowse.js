@@ -1,14 +1,17 @@
-import { Navbar,Button} from 'react-bootstrap';
+import {Button, Container} from 'react-bootstrap';
 
 const NewBrowse = ({ handleConfirmButtonClick }) => {
     return(
-      <Navbar expand="lg">
-      <div className="d-flex">
+      <Container>
+        <div className="d-flex">
           <Button variant="secondary" onClick={handleConfirmButtonClick}>
             Continue Shopping
           </Button>
-      </div>
-      </Navbar>
+        </div>
+
+      </Container>
+      
+      
     );  
   };
 

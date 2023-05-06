@@ -51,6 +51,10 @@ const orderSchema = new mongoose.Schema({
   cart: [productSchema],
   formData: formSchema,
   currUser: UserSchema,
+  orderDate: {
+    type: Date,
+    default: Date.now
+  }
 },
     { collection: "orders" }
 );

@@ -1,7 +1,6 @@
-import {Container, Row, Col, Table, Image} from 'react-bootstrap';
+import { Container, Row, Col, Table, Image } from 'react-bootstrap';
 
-const ConfirmationView = ({cart, cartTotal, cartTax, formData}) =>
-{
+const ConfirmationView = ({ cart, cartTotal, cartTax, formData }) => {
 
   return (
     <>
@@ -62,31 +61,43 @@ const ConfirmationView = ({cart, cartTotal, cartTax, formData}) =>
       </Container>
       <Container>
         <h2>Order Details:</h2>
-        {/* Display order details */}
-        <Row>
-          <Col md={4}>
-            <p>Name:</p>
-            <p>Email:</p>
-            <p>Credit Card:</p>
-            <p>Address:</p>
-            <p>City:</p>
-            <p>State:</p>
-            <p>Zip Code:</p>
-          </Col>
-          <Col md={8}>
-            <p>{formData.fullName}</p>
-            <p>{formData.email}</p>
-            <p>************{formData.creditCard.substring(12, 16)}</p>
-            <p>
-              {formData.address1}
-              {formData.address2 && `, ${formData.address2}`}
-            </p>
-            <p>{formData.city}</p>
-            <p>{formData.state}</p>
-            <p>{formData.zip}</p>
-          </Col>
-        </Row>
+        <Table striped bordered hover variant='light'>
+          <tbody>
+            <tr>
+              <td>Name:</td>
+              <td>{formData.fullName}</td>
+            </tr>
+            <tr>
+              <td>Email:</td>
+              <td>{formData.email}</td>
+            </tr>
+            <tr>
+              <td>Credit Card:</td>
+              <td>************{formData.creditCard.substring(12, 16)}</td>
+            </tr>
+            <tr>
+              <td>Address:</td>
+              <td>
+                {formData.address1}
+                {formData.address2 && `, ${formData.address2}`}
+              </td>
+            </tr>
+            <tr>
+              <td>City:</td>
+              <td>{formData.city}</td>
+            </tr>
+            <tr>
+              <td>State:</td>
+              <td>{formData.state}</td>
+            </tr>
+            <tr>
+              <td>Zip Code:</td>
+              <td>{formData.zip}</td>
+            </tr>
+          </tbody>
+        </Table>
       </Container>
+
     </>
   );
 }

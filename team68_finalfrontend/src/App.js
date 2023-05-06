@@ -252,7 +252,6 @@ function App() {
   }
 
 
-
   const [createButton, setCreateButton] = useState(true);
   const handleCreateButton = () => {
     setCreateButton(true);
@@ -287,7 +286,13 @@ function App() {
 
   const handleViewOrdersModal = () => {
     setShowModal(true)
+  }
 
+
+  const handleLogout = () =>
+  {
+    setSwitchToLogin(true)
+    setCurrUser([])
   }
 
 
@@ -317,6 +322,7 @@ function App() {
           handleAdminButton={handleAdminButton}
           isAdmin={currUser.admin}
           handleViewOrdersModal={handleViewOrdersModal}
+          handleLogout = {handleLogout}
         />
         <ProductsList
           searchTerm={searchTerm}

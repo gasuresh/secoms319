@@ -29,7 +29,6 @@ app.listen(port, () => {
 app.get("/product", async (req, resp) => {
   const query = {};
   const allProducts = await Product.find(query);
-  console.log(allProducts);
   resp.send(allProducts);
 });
 
@@ -51,7 +50,6 @@ const getNextProductId = async () => {
 
 
 app.post("/product/insert", async (req, res) => {
-  console.log(req.body);
   const p_id = await getNextProductId();
   const ptitle = req.body.title;
   const pprice = req.body.price;
@@ -167,7 +165,6 @@ app.post("/registerUser", async (req, res) => {
 app.post('/orders', async (req, res) => {
   try {
     const order = new Order(req.body); // assuming you have a model called "Order"
-    console.log(order);
     const savedOrder = await order.save();
     res.status(201).json(savedOrder);
   } catch (error) {
@@ -175,6 +172,35 @@ app.post('/orders', async (req, res) => {
     res.status(500).send('Error creating order');
   }
 });
+
+app.get("/history/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+
+    const orders = await Order.find({ "currUser.email": email });
+    
+    const formattedOrders = orders.map(order => ({
+      cart: order.cart,
+      formData: order.formData,
+      currUser: order.currUser,
+      orderDate: order.orderDate.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      })
+    }));
+    
+    res.send(formattedOrders);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error retrieving order history');
+  }
+});
+
+
 
   
 
