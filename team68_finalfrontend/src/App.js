@@ -2,7 +2,6 @@ import ProductsList from './ListView/ProductsList';
 import SearchAndCheckout from './ListView/SearchAndCheckout';
 import React, { useState, useEffect } from 'react';
 import ProductData from './product_data.json';
-import BackToProducts from './CartView/BackToProducts';
 import PaymentForm from './CartView/PaymentForm';
 import Cart from './CartView/Cart';
 import ConfirmationView from './ConfView/ConfirmationView';
@@ -12,6 +11,9 @@ import RegistrationPage from './LoginAndRegistration/RegistrationPage';
 import OrderHistory from './OrderHistory';
 import CRUDOptions from './AdminView/CRUDOptions';
 import ProductForm from './AdminView/ProductForm';
+import CheckoutOptions from './CartView/CheckoutOptions';
+
+import { Modal } from 'react-bootstrap';
 
 
 
@@ -85,24 +87,24 @@ function App() {
     e.preventDefault();
     setIsFormSubmitted(true);
     try {
-      const order = {cart, formData, currUser};
+      const order = { cart, formData, currUser };
       console.log(order);
-      
-    fetch("http://localhost:4000/orders", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(order),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Order completed");
-        alert("Order created successfully!");
-      });
+
+      fetch("http://localhost:4000/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(order),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Order completed");
+          alert("Order created successfully!");
+        });
     } catch (error) {
       console.error(error);
     }
 
-    
+
   };
 
 
@@ -159,7 +161,7 @@ function App() {
       });
   };
 
-
+  const [showModal, setShowModal] = useState(false);
 
 
   const handleSwitchToLogin = () => {
@@ -283,11 +285,15 @@ function App() {
   }
 
 
+  const handleViewOrdersModal = () => {
+    setShowModal(true)
+
+  }
+
 
 
   return (
     <>
-
       <LoginPage
         handleSwitchToLogin={handleSwitchToLogin}
         handleSwitchToRegister={handleSwitchToRegister}
@@ -310,6 +316,7 @@ function App() {
           handleCheckout={handleCheckout}
           handleAdminButton={handleAdminButton}
           isAdmin={currUser.admin}
+          handleViewOrdersModal={handleViewOrdersModal}
         />
         <ProductsList
           searchTerm={searchTerm}
@@ -318,34 +325,45 @@ function App() {
           handleCheckout={handleCheckout}
         />
 
+        <Modal show={showModal} onHide={() => setShowModal(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Order History</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <OrderHistory currUser={currUser} />
+          </Modal.Body>
+        </Modal>
+
       </div>
-      <div hidden={!checkoutPressed || isFormSubmitted} style={{ backgroundImage: 'linear-gradient(to bottom, #e6e6fa, #4b0082)', minHeight: '125vh'}}>
-        <BackToProducts handleBackButtonClick={handleBackButtonClick} hidden={switchToLogin || switchToRegister} />
+      <div hidden={!checkoutPressed || isFormSubmitted} style={{ backgroundImage: 'linear-gradient(to bottom, #e6e6fa, #4b0082)', minHeight: '175vh' }}>
+        <CheckoutOptions handleBackButtonClick={handleBackButtonClick} hidden={switchToLogin || switchToRegister} />
         <Cart cart={cart} cartTotal={cartTotal} setCartTotal={setCartTotal} cartTax={cartTax} setCartTax={setCartTax} />
         <PaymentForm handleFormSubmission={handleFormSubmission} handleInputChange={handleInputChange} formData={formData} hidden={switchToLogin || switchToRegister} />
       </div>
 
-      <div hidden={!isFormSubmitted}>
+      <div hidden={!isFormSubmitted} style={{
+        backgroundImage: 'linear-gradient(to bottom, #ADD8E6, #00008B)',
+        minHeight: '175vh'
+      }}>
         <ConfirmationView cart={cart} cartTotal={cartTotal} cartTax={cartTax} formData={formData} hidden={switchToLogin || switchToRegister} />
         <NewBrowse handleConfirmButtonClick={handleConfirmButtonClick} hidden={switchToLogin || switchToRegister} />
-        <OrderHistory currUser={currUser} />
       </div>
 
-      <div hidden={!adminPressed} style={{ backgroundImage: 'linear-gradient(to bottom, #e6e6fa, #4b0082)', minHeight: '125vh'}}>
+      <div hidden={!adminPressed} style={{ backgroundImage: 'linear-gradient(to bottom, #e6e6fa, #4b0082)', minHeight: '125vh' }}>
         <nav className="navbar navbar-expand-lg navbar-light">
           <div className="container-fluid">
             <h2 className="mt-1 me-auto ps-3">Admin View</h2>
-            <button className="btn btn-success me-3" onClick={() => {setAdminPressed(false); handleViewProducts();}}>
+            <button className="btn btn-success me-3" onClick={() => { setAdminPressed(false); handleViewProducts();}}>
               View Products
             </button>
           </div>
         </nav>
-        <CRUDOptions 
+        <CRUDOptions
           handleCreateButton={handleCreateButton}
-          handleUpdateButton={handleUpdateButton} 
-          handleDeleteButton={handleDeleteButton} 
+          handleUpdateButton={handleUpdateButton}
+          handleDeleteButton={handleDeleteButton}
         />
-        <ProductForm createButton={createButton} deleteButton={deleteButton} updateButton = {updateButton} />
+        <ProductForm createButton={createButton} deleteButton={deleteButton} updateButton={updateButton} />
       </div>
 
 

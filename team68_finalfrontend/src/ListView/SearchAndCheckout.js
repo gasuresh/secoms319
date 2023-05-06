@@ -1,6 +1,6 @@
 import { Navbar, FormControl, Button } from 'react-bootstrap';
 
-const SearchAndCheckout = ({ searchTerm, handleSearch, handleCheckout, handleAdminButton, isAdmin }) => {
+const SearchAndCheckout = ({ searchTerm, handleSearch, handleCheckout, handleAdminButton, isAdmin, handleViewOrdersModal}) => {
   return (
     <Navbar expand="lg" style={{ backgroundColor: "#e6e6fa" }}>
       <div className="d-flex w-100 align-items-center justify-content-between">
@@ -14,8 +14,11 @@ const SearchAndCheckout = ({ searchTerm, handleSearch, handleCheckout, handleAdm
           />
         </div>
         <div className="d-flex justify-content-end">
-          <Button hidden = {!isAdmin} variant="info" className="me-5" onClick={handleAdminButton}>
+          <Button hidden={!isAdmin} variant="info" className="me-3" onClick={handleAdminButton}>
             Admin Options
+          </Button>
+          <Button variant="dark" className="me-3" onClick={handleViewOrdersModal}>
+            View Order History
           </Button>
           <Button variant="primary" onClick={handleCheckout}>
             Checkout

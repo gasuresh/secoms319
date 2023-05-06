@@ -1,16 +1,17 @@
 import { Navbar, Button} from 'react-bootstrap';
 
 
-const BackToProducts = ({ handleBackButtonClick }) => {
+const CheckoutOptions = ({ handleBackButtonClick }) => {
   return (
     <Navbar expand="lg">
       <div className="d-flex">
         <Button variant="outline-secondary" onClick={handleBackButtonClick}>
           Back to Products
         </Button>
+
       </div>
     </Navbar>
   );
 };
 
-export default BackToProducts;
+export default CheckoutOptions;
