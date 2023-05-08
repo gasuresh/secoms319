@@ -61,9 +61,6 @@ const Cart = ({cart, cartTotal, setCartTotal, cartTax, setCartTax}) => {
                 <p>Subtotal: ${cartTotal.toFixed(2)}</p>
                 <p>Tax: ${cartTax.toFixed(2)}</p>
                 <h6 className="mt-3">Order total: ${(cartTotal + cartTax).toFixed(2)}</h6>
-                <Button variant="primary" className="mt-3" size="lg" block>
-                  Checkout
-                </Button>
               </Col>
             </Row>
           </>
